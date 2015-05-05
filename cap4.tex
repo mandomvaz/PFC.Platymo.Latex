@@ -1,0 +1,744 @@
+\chapter{Hardware}
+Como hemos visto en el capitulo anterior el hardware que compone una red de sensores básicamente es de dos tipos: los nodos y el gateway. Buscaremos en el mercado los dispositivos que mejor se adecuen a nuestras necesidades. Empecemos con el hardware de los nodos.
+
+
+\section{Nodos sensores}
+Como primera opción veamos los principales nodos ya existentes en el mercado y los sistemas operativos que los gobiernan.
+
+
+
+\subsection{Nodos en el mercado}
+En estos nodos el popular uso del MSP430 y el ATmega128 como unidad microcontroladora se debe a varios factores, entre ellos: ultra bajo consumo de energía, soporte de la comunidad de desarrolladores, compiladores open-source basados en GNU GCC, y soporte de Tiny OS.
+
+
+
+Existen también otros tipos de nodos basados en arquitecturas ARM como SunSpot de Sun Microsystems, e IMote2 de Crossbow. Estos proporcionan arquitecturas de 32 bits, velocidades de procesado mayores de 100MHz, unidades de manejo de memoria y la capacidad de soportar versiones ligeras de Linux.
+
+
+
+El SunSpot de Sun Microsystem usa Squawk, una maquina virtual de Java que soporta Java nativo en un ATMEL920T ARM. Squawk es una MV de código abierto escrita mayormente en Java y que se ejecuta directamente sobre el microcontrolador sin la necesidad de un sistema operativo. Ejecutándose sin un SO subyacente se reducen los requisitos de memoria, la complejidad de la implementación, y la necesidad de soportar múltiples sistemas operativos. El hardware de este nodo es normalmente considerado de lujo en comparación con otros, con lo que el precio de estos puede subir fácilmente. La única característica que lo diferencia es que los nodos son programados en Java.
+
+
+
+Las plataformas IRIS, MicaZ, Mica2, TelosB, IMote2 pertenecen a Crossbow. La tecnología desarrollada por esta empresa tiene su origen en las investigaciones de su fundador en la Universidad de California Berkeley, y ha estado a la vanguardia durante más de una década.
+
+
+
+IRIS, MicaZ y Mica2 tienen unas especificaciones casi idénticas, ya que unas son revisiones de las otras. \ IRIS utiliza una versión ligeramente mejorada del ATmega128 de la MicaZ y tiene el doble SRAM interna. Mica2 usa el mismo microcontrolador de la MicaZ, pero con un radio transceptor de menor frecuencia. Además de algunas mejoras de hardware como más temporizadores, entrada/salida digitales, puertos SPI, etc... Todas soportan TinyOS y usan una red Zigbee.
+
+
+
+La TelosB usa un microcontrolador de 16bit, el MSP430 de Texas Instruments, el cual pertenece a una de las familias de controladores más populares en la comunidad de investigación actual. TelosB también cuenta con conectividad directa a USB, para una programación y depuración fácil, así como cuatro sensores ya conectados que proveen que permiten al usuario leer y transmitir valores sin la necesidad de acoplarle sensores personalizados.
+
+
+
+IMote2 esta esta basada en el procesador Intel Xcale PXA271 de arquitectura ARM. Esta no es una plataforma tradicional de bajo coste, consumo y recursos. De hecho, se centra en aplicaciones que requieren recursos computacionales altos, como procesado de video y audio. IMote2 soporta velocidades desde 13MHz hasta 416MHz y es una de las pocas que han portado TinyOS a un microcontrolador no MSP430 o Atmega. También soporta Linux y Microsoft .NET Microframework.
+
+
+
+
+Por ultimo tenemos WaspMote de Libelium una empresa española. WaspMote es una evolución de la SquidBee basada en el tándem Arduino-Xbee, es completamente compatible con el código Arduino, salvando las diferencias del pinout, y soluciona el problema de poner el nodo en modo sleep, solo con Arduino no es posible. Además tiene una gran variedad de placas sensoras listas para acoplar y usar, y múltiples opciones de conectividad, como pueden ser: 802.15.4, ZigBee, Bluetooth, radiofrecuencia, etc...
+
+
+
+En cuanto a precios estos oscilan entre los aproximadamente 150\euro del WaspMote a los 700\euro aproximadamente del SunSpot, eso solo las placas básicas, sin contar con los sensores que habría que instalarles.
+
+
+
+\subsection{Sistemas Operativos para WSN}
+Las necesidades que tiene un nodo de una WSN son totalmente distintas a las que pueda tener cualquier otro dispositivo como puede ser un PC, por lo tanto estos nodos tienen sus propios sistemas operativos.
+
+
+
+
+Los sistemas operativos para WSN son típicamente menos complejos que los de propósito general, debido a los requisitos especiales de las aplicaciones en las que se usan, como a las restricciones de recursos encontradas en las plataformas hardware utilizadas. Por ejemplo, las aplicaciones de WSN no son interactivas como son las aplicaciones para PC y debido a esto, estos sistemas no necesitan incluir el soporte de interfaz de usuario. Además, las restricciones de los recursos en términos de memoria hacen imposible de implementar los mecanismos de memoria virtual.
+
+
+
+El hardware de la redes inalámbricas de sensores no es muy diferente al de sistemas empotrados tradicionales y por lo tanto es posible utilizar sistemas como eCos o uC/OS. Sin embargo, estos sistemas están diseñados para usar operaciones en tiempo real. A diferencia de los tradicionales sistemas operativos para sistemas empotrados, los sistemas desarrollados para redes de sensores inalámbricas no tienen como objetivo apoyar operaciones en tiempo real.
+
+
+
+TinyOS es quizás el primer sistema operativo diseñado específicamente para redes de sensores inalámbricas. A diferencia de la mayoría de los otros sistemas operativos, TinyOS se basa en un modelo de programación controlado por eventos en vez de multiprocesos. Los programas de TinyOS están compuestos por eventos y tareas guiadas. Cuando un evento externo ocurre, como puede ser la entrada de un paquete de datos o la lectura de un sensor, TinyOS llama al evento apropiado y lo ejecuta. El lanzador de eventos puede posponer tareas durante cierto tiempo. 
+
+
+
+Tanto TinyOS como los programas escritos para él son escritos en un lenguaje de programación especial llamado nesC, que es una extensión del lenguaje de programación C. NesC esta diseñado para determinar las prioridades entre tareas y eventos.
+
+
+
+Hay también sistemas operativos que permiten programar en C. Por ejemplo Contiki, MANTIS, Btnut, SOS y Nano-RK. Contiki esta diseñado para soportar la carga de módulos a través de la red y para soportar cargas de ficheros ELF. El kernel de Contiki esta basado en lanzamiento de eventos, como TinyOS, pero puede llegar a soportar multitareas básicas. 
+
+
+
+A diferencia del kernel de Contiki basado en eventos, los kernels MANTIS y Nano-RK están basados en multitareas preventivas. El kernel divide el tiempo entre los procesos activos y decide que proceso debe ser ejecutado para hacer la programación de la aplicación más fácil. Nano-RK tiene un kernel basado en tiempo real que permite controlar la manera de acceder de las tareas, a la CPU, a la red y a las placas sensoras. 
+
+
+
+
+Como TinyOS y Contiki, SOS es un sistema operativo basado en eventos. La principal característica de SOS es su soporte para módulos cargables. Un sistema complejo se construye a partir de módulos más pequeños, probablemente en tiempo de ejecución. Para soportar el dinamismo inherente en su modulo de interfaz, SOS soporta una gestión de la memoria dinámica.
+
+ 
+
+\subsubsection{TinyOS}
+TinyOS es un sistema operativo orientado a trabajar con redes de sensores, desarrollado en la Universidad de Berkeley. Puede ser visto como un conjunto de programas avanzados, el cual cuenta con un amplio uso por parte de comunidades de desarrollo, dada sus características de ser un proyecto de código abierto. Este ‘conjunto de programas’ contiene numerosos algoritmos, que nos permitirán generar enrutamientos, así como también aplicaciones pre-construidas para sensores. Además soporta diferentes plataformas de nodos de sensores, arquitecturas bases para el desarrollo de aplicaciones.
+
+
+
+El lenguaje en el que se encuentra programado TinyOS es un meta-lenguaje que deriva de C, cuyo nombre es NesC. Además existen varias herramientas que ayudan el estudio y desarrollo de aplicaciones para las redes de sensores, que van desde aplicaciones para la obtención y manejo de datos, hasta sistemas completos de simulación.
+
+
+
+El diseño de TinyOS está basado en responder a las características y necesidades de las redes de sensores, tales como reducido tamaño de memoria, bajo consumo de energía, operaciones de concurrencia intensiva, diversidad en diseños y usos, y finalmente operaciones robustas para facilitar el desarrollo confiable de aplicaciones. \ Además se encuentra optimizado en términos de uso de memoria y eficiencia de energía.
+
+
+
+El diseño del Kernel de TinyOS está basado en una estructura de dos niveles de planificación:
+\begin{description}
+\item[Eventos] Pensados para realizar un proceso pequeño (por ejemplo cuando el contador del timer se interrumpe, o atender las interrupciones de un conversor análogo-digital). Además pueden interrumpir las tareas que se están ejecutando.
+\item[Tareas] Las tareas son pensadas para hacer una cantidad mayor de procesamiento y no son críticas en tiempo (por ejemplo calcular el promedio en un arreglo). Las tareas se ejecutan en su totalidad, pero la solicitud de iniciar una tarea, y el término de ella son funciones separadas.
+\end{description}
+
+
+
+Con este diseño permitimos que los eventos (que son rápidamente ejecutables), puedan ser realizados inmediatamente, pudiendo interrumpir a las tareas (que tienen mayor complejidad en comparación a los eventos).
+
+
+
+El enfoque basado en eventos es la solución ideal para alcanzar un alto rendimiento en aplicaciones de concurrencia intensiva. Adicionalmente, este enfoque usa las capacidades de la CPU de manera eficiente y de esta forma gasta el mínimo de energía.
+
+
+
+TinyOS se encuentra programado en NesC, un lenguaje diseñado para reflejar las ideas propias del enfoque de componentes, incorporando además un modelo de programación que soporta concurrencia, manejo de comunicaciones y fácil interacción con el medio (manejo de hardware).
+
+
+
+\subsubsection{LINUX}
+Linux es un sistema operativo tipo Unix que se distribuye bajo la Licencia Pública General de GNU (GNU GPL), es decir que es software libre. Su nombre proviene del kernel de Linux, desarrollado en 1991 por Linus Torvalds.
+
+
+
+Hablar de Linux es sólo referirse al Kernel, el núcleo del sistema. El núcleo sólo es una interfaz que permite comunicar el hardware con los programas. Por lo que el Kernel solo no forma el sistema operativo. 
+
+
+
+Un sistema GNU/Linux empotrado simplemente hace referencia a un sistema empotrado basado en el kernel de Linux. Es importante destacar que no existe un kernel específico para sistemas empotrados, es decir, no necesitamos crear un kernel especial para sistemas empotrados. A menudo se utilizan las versiones oficiales del kernel de Linux para construir un sistema. Por supuesto, es necesario configurar el mismo para dar soporte especial al hardware de un determinado equipo.
+
+
+
+ Fundamentalmente, un kernel utilizado en un sistema empotrado difiere de un kernel usado en una computadora de escritorio o servidor en la configuración del mismo al momento de compilarlo. 
+
+
+
+La arquitectura de un sistema GNU/Linux está formado por un conjunto de componentes, y el kernel Linux es sólo una parte de este conjunto. Inmediatamente sobre el hardware se sitúa el kernel. El kernel es el componente central del sistema operativo. Sus funciones son principalmente administrar el hardware de manera coherente y justa mientras se le otorga un nivel de abstracción familiar, a través de las APIs, a las aplicaciones de nivel de usuario.
+
+
+
+
+Entre otras tareas relevantes de un sistema operativo, el kernel Linux maneja dispositivos, administra los accesos de E/S, controla los procesos y administra el uso compartido de memoria. Dentro del kernel, la interfaz de bajo nivel es específica para cada configuración de hardware, sobre la cual, el kernel ejecuta y provee control directo de los recursos hardware. 
+
+
+
+Típicamente, los servicios de bajo nivel manejan operaciones específicas de la CPU, operaciones de memoria específicas a la arquitectura, y provee interfaces básicas para dispositivos.
+
+
+
+La capa de alto nivel provee abstracciones comunes a todos los sistemas Unix, incluyendo procesos, archivos, sockets y señales. Este nivel de abstracción se mantiene constante aunque difiera el hardware. 
+
+
+
+Entre estos dos niveles de abstracción, el kernel necesita lo que se denomina componentes de interpretación para comprender e interactuar con datos estructurados provenientes de, o hacia ciertos dispositivos.
+
+
+
+Los diferentes tipos de sistemas de archivos y los protocolos de red son ejemplos de fuentes de datos estructurados. El kernel necesita interpretarlos e interactuar a fin de proveer acceso a los datos provenientes desde estas fuentes o hacia las mismas.
+
+
+
+\subsubsection{MICROSOFT .NET MICRO FRAMEWORK}
+La .NET Micro Framework fue creada desde el inicio como una solución .NET para dispositivos integrados pequeños de sensores industriales e instrumentación para sistemas empotrados.
+
+
+
+Además de estar totalmente integrada con Visual Studio, el kit de desarrollo de software .NET Micro Framework (SDK) viene equipado con un emulador extensible para simular capacidades de hardware. La estructura permite a los desarrolladores de dispositivos conectar diversas soluciones de hardware para prácticamente cualquier dispositivo periférico mediante conexiones de comunicación estándares de la industria y unidades gestionadas personalizadamente.
+
+
+
+
+La .NET Micro Framework dispone de ofertas integradas de Microsoft en un nuevo mercado de dispositivos que se basan en procesadores de 32 bits de bajo coste y están constreñidos en términos de memoria, potencia de la batería y otros recursos. Ofreciendo paradigmas de programación potentes y modernos a este terreno, .NET Micro Framework pretende acelerar la innovación de dispositivos pequeños y conectados.
+
+\begin{itemize}
+\item Requiere sólo unos pocos cientos de kilobytes de RAM, y tan poco como 512 K de memoria flash.
+\item Soporta procesadores con y sin MMU.
+\item Dispone de una interfaz de control de energía que permite que la aplicación maximice la vida dela batería.
+\end{itemize}
+
+
+Hasta ahora la gente de Microsoft a publicado el SDK del Microsoft .NET Micro Framework 2.5 el cual nos permitirá desarrollar aplicaciones para pequeños dispositivos utilizando para tal motivo, Visual Studio, C\#. 
+
+
+
+Microsoft .NET Micro Framework es un pequeño subconjunto reducido de clases, en donde podemos desarrollar soluciones en C\# para pequeños dispositivos, para trabajar con este pequeño Framework necesitamos disponer de Microsoft Visual Studio 2005 Standar o superior, y un sistema operativo Windows, los cuales suelen disponer de un conjunto de librerías .NET completamente integradas enfocadas al uso en sistemas empotrados.
+
+
+
+Varias empresas están apostando por esta tecnología, Digi International Inc dio a conocer sus planes para un lanzamiento previo del kit de desarrollo Digi Connect ME para Microsoft .NET Micro Framework. El Digi Connect ME incluye soporte para redes Ethernet, un puerto en serie y señales de propósitos generales entrada/salida (GPIO). Es la primera solución disponible para .NET Micro Framework para dar apoyo a las redes Ethernet.
+
+
+
+EmbeddedFusion, que entrega soluciones centrales de hardware y software integrado para desarrolladores de sistemas integrados, anunció el Meridian CPU, que es un módulo central CPU que incorpora procesador Freescale i.MXS, RAM, Flash y .NET Micro Framework. \ Para asistir a los desarrolladores en el aprendizaje de cómo se aplica .NET Micro Framework en varios escenarios integrados, EmbeddedFusion también creó la plataforma de desarrollo Tahoe, que permite la experimentación y exploración de .NET Micro Framework justo fuera de la caja.
+
+
+
+Freescale también introdujo un kit de desarrollo para .NET Micro Framework que permite a los clientes entregar soluciones diferenciadas en el mercado con rendimiento ARM9 a muy baja potencia.
+
+
+
+Además, Rhode Consulting, un especialista en tecnologías Microsoft Windows Embedded, anunció la disponibilidad del kit de evaluación de FlexiDis con .NET Micro Framework instalado. La plataforma FlexiDis utiliza los procesadores centrales Atmel ARM7 y ARM9 con velocidad de hasta 180 MHz. La combinación de esas velocidades, hasta 16 MB de memoria flash y SDRAM, y una pantalla QVGA de 2,2 hace de FlexiDis un componente de elección para varios tipos de aplicaciones industriales en las que se requieren HMI integrado o soluciones de visualización.
+
+
+
+
+\subsubsection{eCos}
+eCos (embedded Configurable operating system) es un sistema operativo de código abierto, gratuito y de operación en tiempo real desarrollado para sistemas empotrados y para aplicaciones que necesiten un procesador con múltiples sesiones. Puede ser personalizado para cumplir los requisitos que la aplicación precise, con cientos de opciones, pudiendo llegar a la mejor combinación entre el rendimiento en tiempo real y el hardware necesario.
+
+
+
+Este sistema es programable bajo lenguaje C y tiene capas y APIs compatibles para POSIX y uITRON. eCos fue diseñado para aparatos con un tamaño de memoria sobre cientos de kilobytes o con requerimientos en tiempo real. Puede ser usado en hardware con muy poca RAM soportando Linux empotrado a partir de un mínimo de 2 MB de RAM, sin incluir las necesidades de la aplicación y del servicio.
+
+
+
+
+eCos funciona correctamente en una amplia variedad de plataformas hardware como pueden ser, ARM, CalmRISC, FR-V, Hitachi H8, IA-32, Motorola 68000, Matsushita AM3x, MIPS, NEC V8xx, Nios II, PowerPC, SPARC, and SuperH.
+
+
+
+Incluido con la distribución de eCos disponemos de RedBoot, una aplicación de código abierto que usa la capa de abstracción de hardware de eCos que provee soporte de arranque para sistemas empotrados.
+
+
+
+eCos fue inicialmente desarrollado por Cygnus Solutions, que más tarde fue comprado por Red Hat. A principio de 2002 cesó el desarrollo de eCos y colocó al personal que estaba trabajando en el proyecto formando su propia compañía, eCosCentric, para continuar con su desarrollo y dar soporte comercial para eCos. En enero de 2004, a partir de una solicitud de los desarrolladores de eCos, Red Hat aceptó transferir los derechos de eCos a la Fundación de Software Libre. Esta transferencia fue finalmente ejecutada en octubre de 2005.
+
+
+
+eCosPro está formado por una distribución de eCos y RedBoot creada por eCosCentric y está orientado a desarrolladores que quieran integrar eCos y RedBoot dentro de productos comerciales. Está definido como estable, completamente testado, certificado y con soporte, sin embargo, algunas de sus características no han sido liberadas como software libre.
+
+
+
+\subsubsection{\(\mu\)C/OS}
+MicroC/OS-II (comúnmente llamado \(\mu\)C/OS-II o uC/OS-II), es un sistema operativo multitarea, en tiempo real, basado en prioridad preventiva, de bajo coste donde el kernel está escrito principalmente en el lenguaje de programación C. Es principalmente entendido para uso en sistemas empotrados.
+
+
+
+La designación II es debido a que es la segunda generación de un kernel que originalmente fue publicado en 1992 en la segunda parte de un articulo en la revista Embedded Systems Programming bajo el titulo \(\mu\)C/OS The Real-Time Kernel y escrito por Jean J. Labrosse. El autor intentó describir como funciona un sistema operativo portable por dentro y las razones por las que fue desarrollado. Pero rápidamente todo esto tomó un rumbo comercial.
+
+
+
+\(\mu\)C/OS-II es soportado por Micrium Inc y se obtiene bajo licencia del producto, aunque el uso de este sistema operativo es gratis para uso educacional o no comercial. Adicionalmente Micrium distribuye otros productos de software como uC/OS-View, uC/CAN, uC/TCP-IP, uC/FS, uC/GUI, uC/MOD-BUS, uC/LCD, uC/USB (Mass Storage Device and Bulk) y un largo grupo de aplicaciones para uC/TCP-IP como software cliente para DHCP, POP3, SNTP, FTP, TFTP, DNS, SMTP, y TTCP. El software en su modalidad de servido incluye HTTP, FTP y TFTP. PPP es también disponible.
+
+
+
+Está disponible para la mayor cantidad de procesadores y placas que existen en el mercado y es adecuado para el uso en sistemas empotrados donde la seguridad es crítica como en aviación, sistemas médicos o instalaciones nucleares.
+
+
+
+\subsubsection{Contiki}
+Contiki es un pequeño sistema operativo de código abierto, altamente portable y multitarea, desarrollado para uso en pequeños sistemas, desde ordenadores de 8-bit a sistemas empotrados sobre microcontroladores, incluyendo nodos de redes de sensores. El nombre Contiki viene de la famosa balsa Kon-Tiki de Thor Heyerdahl.
+
+
+
+
+A pesar de incluir multitarea y una pila TCP/IP, Contiki sólo requiere varios kilobytes de código y unos cientos de bytes de RAM. Un sistema totalmente completo con una GUI requiere aproximadamente 30 kilobytes de RAM.
+
+El núcleo básico y la mayor parte de las funciones principales fueron desarrolladas por Adam Dunkels en el grupo de sistemas de redes empotradas en el instituto sueco de ciencias computacionales.
+
+
+
+
+Contiki consiste en un núcleo orientado a eventos, el cual hace uso de protohilos, sobre el cual los programas son cargados y descargados dinámicamente. También soporta multihilado apropiativo opcional por proceso, comunicación entre procesos mediante paso de mensajes a través de eventos, al igual que un subsistema GUI opcional, el cual puede usar un soporte directo de gráficos para terminales locales, terminales virtuales en red mediante VNC o sobre Telnet.
+
+
+
+Contiki funciona en una variedad de plataformas, desde microcontroladores empotrados, como el MSP430 y el AVR, a viejas computadoras domésticas. El tamaño del código está en el orden de los kilobytes y el uso de la memoria puede configurarse para que sea de sólo unas decenas de bytes.
+
+\subsubsection{MANTIS}
+El sistema operativo MANTIS (MultimodAl system for NeTworks of In-situ wireless Sensors) suministra un nuevo sistema operativo empotrado de plataforma múltiple para redes de sensores inalámbricos. 
+
+
+
+Ante el incremento de complejidad de las tareas realizadas por las redes de sensores como compresión, agregación y procesado de señales, los multiprocesos en MANTIS sensor OS (MOS) permiten interpaginar complejas tareas con tareas susceptibles al tiempo para así mitigar los problemas en los saltos de buffers.
+
+
+
+
+Para conseguir una eficiencia en el uso de la memoria, MOS es implementado para que utilice una pequeña cantidad de RAM. Usando menos de 500 bytes de memoria, incluyendo el kernel, los controles de tiempo y la pila de comunicación. Para conseguir la eficiencia energética, el controlador de eficiencia energética de MOS hace que el microcontrolador duerma después de ejecutar todas las tareas activas, reduciendo el consumo de energía al rango de \(\mu\)A.
+
+
+
+Una de las características principales de MOS es la flexibilidad en el soporte de múltiples plataformas como PCs, PDAs y diferentes plataformas de microsensores. Otra de las características destacada del diseño de MOS es el soporte de control remoto, permitiendo una reprogramación dinámica y un acceso remoto.
+
+
+
+\subsubsection{BTnut}
+Sistema operativo de código abierto creado para correr dentro de sistemas empotrados BTnodes. Fue diseñado principalmente para el procesador Atmel ATmega128 (el cual forma parte de los motes BTnodes) y por lo tanto es el más recomendado para esta clase de nodos.
+
+
+
+La actual compilación de sus programas (la conversión de código C a código maquina) es realizada usado gcc-avr, el cual es un compilador de C libre para la plataforma de procesadores Atmel. Podemos diferenciar tres partes: las rudimentarias librerías C que son implementadas por la parte avr-libc de gcc-avr; las rutinas de alto nivel construidas para avr-libc por Nut/OS; y los drivers específicos para el funcionamiento del mote BT-node proporcionados por BTnut.
+
+
+
+\subsubsection{SOS}
+SOS es un sistema operativo desarrollado en la Universidad de California (UCLA), específicamente en el NESL (Networked \& Embedded Systems Laboratory).
+
+
+
+SOS es un sistema operativo para redes de sensores que procura remediar algunos de las limitaciones propias de la naturaleza estática de muchos de los sistemas precursores a éste (por ejemplo TinyOS).
+
+
+
+SOS implementa un sistema de mensajería que permite múltiples hebras entre la base del sistema operativo y las aplicaciones, las cuales pasan a ser módulos que pueden ser cargadas o descargadas en tiempo de ejecución sin interrumpir la base del sistema operativo.
+
+
+
+El principal objetivo de SOS es la reconfigurabilidad. Ésta se define como la habilidad para modificar el software de nodos individuales de una red de sensores, una vez que estos han sido desplegados físicamente e inicializado su funcionamiento. En el caso de encontrar un problema, en caso de no contar con esta solución, habría sido necesario recolectar todos los nodos para poder modificar su software.
+
+
+
+La capacidad de dinámicamente agregar o remover módulos, permite la construcción de software mucho más tolerante a fallos. Esto presenta dos grandes ventajas: una es el hecho de poder realizar updates fácilmente, y la otra es la capacidad de anular el funcionamiento de algún módulo defectuoso, de algún nodo que pertenece a la red.
+
+
+
+Además de las técnicas tradicionales usadas en el diseño de sistemas empotrados, las características del kernel de SOS son:
+\begin{itemize}
+\item Módulos cargados dinámicamente.
+\item Programación flexible de prioridades.
+\item Simple subsistema de memoria dinámica.
+\end{itemize}
+
+
+
+
+
+
+\subsubsection{Nano-RK}
+Nano-RK es un sistema operativo completamente preventivo basado en reserva bajo tiempo real (RTOS) desarrollado en la universidad de Carnegie Mellon con soporte para redes multisalto adecuado para el uso en redes de sensores inalámbricas. Nano-RK funciona adecuadamente con plataformas como redes de sensores FireFly y sobre los motes MicaZ.
+
+
+
+Incluye un kernel con recursos empotrados de bajo peso con bastantes funcionalidades y soporte de tiempo usando menos de 2 KB de memoria RAM y 18 KB de ROM. Nano-RK soporta multitareas preventivas con prioridad para asegurar que los plazos de las tareas son conocidos, además de soporte de CPU, red y sensores y actuadores.
+
+
+
+Las tareas pueden especificar las demandas de recursos y el sistema operativo provee el acceso controlado y garantizado para los ciclos de CPU y los paquetes de red. Todos estos recursos forman la reserva de energía virtual que permite al sistema operativo controlar el nivel de energía del sistema y de las tareas.
+
+
+
+\subsection{Conclusión}
+Después de haber analizado muchos de los nodos existentes y sus sistemas operativos, vemos que estos pueden llegar a ser bastante caros. además, al estar orientados a los ámbitos académicos e industriales, no son fácilmente operables por usuarios no versados en el tema de las WSN, aparte de que seria complicado acceder a este tipo de hardware por estos usuarios.
+
+
+
+Por ello no podemos considerarlos como opciones para el proyecto, puesto que por la propia naturaleza del proyecto buscamos un nodo con un coste más bajo, más sencillo de usar y que sea fácilmente accesible.
+
+
+
+Aun así, de todos ellos el único que se acerca a nuestras necesidades es el WaspMote, ya que al estar basado en Arduino y ser bastante modular es bastante fácil de instalar y programar gracias a la gran cantidad de documentación disponible para Arduino. El problema es que al haber sido diseñado con propósito general muchas de las características que tiene el nodo básico no son necesarias y aumentan su coste.
+
+
+
+Por lo tanto optaremos por crear nuestros propios nodos a partir de una placa de tipo Arduino para la parte de recogida, procesado y actuación; y un modulo Xbee para las comunicaciones.
+
+
+
+\section{Placas tipo Arduino}
+Este tipo de placas surgen con el objetivo de simplificar el proceso de prototipaje en proyectos de electrónica multidisciplinar. Están basadas en un microcontrolador, con todos los circuitos y componentes extra que se necesitan para su puesta en marcha, y un entorno de desarrollo especifico. Sin más necesidades que un pc para instalar el entorno de desarrollo y ya quedaría lista para usar. Así, estas placas permiten centrarse en el código del microcontrolador y poder olvidarnos del hardware de control común como las entradas y salidas, generador de pulsos de reloj, acceso a la RAM, etc...
+
+
+
+
+Estas placas gozan de una gran popularidad actualmente, ya que gracias a su facilidad de uso han acercado la electrónica a un publico más amplio. Ahora artistas, diseñadores, aficionados y en definitiva cualquier persona con inquietudes en temas de electrónica puede realizar sus proyectos e ideas de una forma mucho más sencilla.
+
+
+
+Debido a la popularidad que tienen podemos encontrar muchos modelos distintos en el mercado. Por mencionar algunos, destacamos: 
+\begin{description}
+\item[Arduino] Podríamos decir que es la responsable de la popularidad que tienen estas placas hoy en día, aunque existen placas anteriores hasta la llegada de Arduino no empezaron a hacerse populares. Esta basada en la familia AVR de Atmel, siendo el Atmega328 uno de los más usados. Dispone un sistema de añadidos llamados “shields”, para extender las funcionalidades de la placa, tales como conexión WiFi o Xbee, control de servos y un largo etcétera. Otro detalle a destacar es la filosofía open-source detrás de la plataforma, lo que la ha llevado a tener una gran comunidad de usuarios y profesionales detrás de esta plataforma.
+\item[Pinguino] Es una plataforma similar a Arduino y compatible con esta, aunque no al 100\%. Esta basada en los microcontroladores PIC de Microchip. El objetivo de esta plataforma es llevar la simplicidad del código de Arduino a los micros PIC. También es open-source, aunque su comunidad no es tan grande como la de Arduino, por lo que la documentación no es tan extensa. Un punto negativo es que se vende sin ensamblar, por lo que un usuario menos experto podría tener problemas a la hora de montarlo.
+\item[Launchpad] de Texas Instruments, esta basada en la familia de microcontroladores MSP430 de la misma empresa. Dichos microcontroladores se caracterizan por un extremadamente bajo consumo de potencia y precios también muy bajos, incluso menores que algunos microcontroladores de 8 bits disponibles actualmente en el mercado. Al igual que Arduino también disponte de un sistema similar de añadidos, llamados en este caso “Boosterpacks”. El inconveniente de esta plataforma es la escasa cantidad de documentación.
+\end{description}
+
+
+Para nuestro proyecto hemos optado por la plataforma Arduino, las razones para escogerla son:
+\begin{itemize}
+\item Fácil acceso al hardware. Actualmente en cualquier tienda de electrónica podemos adquirir uno sin mayores problemas, y no solo a las placas básicas sino a todo el ecosistema que las rodea.
+\item Sistema de shields. Aunque Launchpad también tiene un sistema similar, el de Arduino es más rico en opciones.
+\item Entorno de desarrollo. El entorno de desarrollo es fácil de usar para usuarios noveles y suficientemente potente para usuarios expertos, además de ser multiplataforma.
+\item La documentación. Existen infinidad de sitios web y literatura basada en Arduino, lo cual es una gran ventaja a la hora de trabajar con la plataforma.
+\item La comunidad de usuarios. Gracias a esta comunidad podemos encontrar muchos ejemplos de código y librerías completas de manejo de dispositivos, comunicaciones y demás, que facilitan y aceleran enormemente el desarrollo de proyectos.
+\end{itemize}
+
+
+
+
+La historia de Arduino comienza en Italia, concretamente en Ivrea, en el Instituto de Diseño Interactivo de Ivrea, donde Massimo Banzi, uno de sus docentes, se propuso diseñar su propia placa de hardware para trabajar con sus estudiantes, las disponibles en el mercado estaban a precios prohibitivos. 
+
+
+
+Los fundadores del proyecto, Massimo Banzi y David Cuartielles, junto con otros colaboradores, decidieron publicar los avances del mismo en la red, liberándolo como software libre y hardware libre. También se inclinaron por los microcontroladores de Atmel, que si bien son el elemento de hardware no-libre dentro de la placa, el fabricante publica sus librerías de compilación libres, de tal forma que resulta fácil para la comunidad portarlas a diferentes sistemas operativos.
+
+
+
+Gracias a la colaboración de más interesados a través de la red, los prototipos evolucionaron hacia modelos más accesibles. En 2005 se comenzaron a fabricar las primeras placas y las bautizaron con el mismo nombre que uno de los hijos pródigos de la ciudad, <<Arduino I, Marqués de Ivrea>>. Y hoy hay fabricadas más de 120.000 placas Arduino por todo el mundo. Y el fenómeno sigue en aumento.
+
+
+
+El mayor atractivo de Arduino, además de su precio, es que ofrece un entorno de programación amigable para su microcontrolador, que se puede ejecutar en un PC con cualquier sistema operativo, y que permite rápidamente comenzar a ejecutar programas \ de manera sencilla, tarea que por lo general demanda conocimientos más avanzados en este tipo de dispositivos. 
+
+
+
+El IDE se compone del editor de texto, un conjunto de librerías y las herramientas de compilación y programación para hacerlas trabajar. Es multiplataforma, es decir, existen versiones para los sistemas operativos más populares, Windows, Linux y Mac Os X. Al igual que el resto de entorno Arduino, se puede acceder al código fuente, el cual esta escrito en c, c++ y java.
+
+
+
+Puede tratarse de un programador experto o un especialista en electrónica, o sólo de un usuario con conocimientos mínimos: la plataforma de software incluye gran cantidad de programas, bibliotecas y esquemas de circuitos para guiar a usuarios sin experiencia. 
+
+
+
+Arduino, por así decirlo, es <<electrónica hecha fácil>>.
+
+
+
+Otro aspecto destacable de la plataforma es el sistema de ampliación, los llamados <<shields>>. Los shields son las placas de expansión de Arduino. Estas placas se insertan en los conectores de las placas Arduino y proporcionan nuevo hardware. Muchas de las placas de Arduino tienen el mismo factor de forma y pines compatibles, de esta manera la mayoría de los shields son compatibles con un gran numero de placas Arduino.
+
+
+
+Hay varios shields para construir redes inalámbricas, como el Xbee Shield para redes Zigbee, o el Wifi Shield para redes WiFi. También esta el GSM Shield para comunicaciones por gsm/gprs, la red de telefonía móvil.
+
+
+
+También hay varias shields para el manejo de motores. Estas sirven para proporcionar a los motores la corriente suficiente, ya que Arduino no puede manejar grandes corrientes. Los hay compatibles con motores paso a paso, servomotores o para ambos.
+
+
+
+Otras familias de shields son las multimedia: pantallas, reproductores de audio, cámaras, etc...
+
+
+Por ultimo, mencionar también los shields que añaden alternativas de alimentación, como los que permiten la carga de baterías Li-Po, o los que utilizan paneles solares.
+
+
+
+Arduino dispone de un sencillo entorno de desarrollo que permite escribir programas, compilarlos y cargarlos en el hardware. 
+
+
+
+Las primeras Arduino que se crearon fueron las que utilizaban interfaz serie y micros ATmega8, pero a día de hoy están obsoletas. Primero se cambio la interfaz por uno USB y después se cambio el microcontrolador por un Atmega 168 y luego por los ATmega328 para disponer de más espacio de memoria.
+
+
+
+La placa más popular es la UNO, como se acaba de ver, tiene interfaz USB y un ATmega328 por micro.
+
+
+
+Las principales limitaciones de la UNO son las memorias y el numero de pines, así que después se lanzaron las placas de la familia Mega. Estas tienen un micro más grande y más opciones de interconexión, a costa de un tamaño mayor.
+
+
+
+Para aplicaciones en las que el tamaño es critico hay una gran variedad de opciones, como las versiones Nano, Mini y Fio. Las dos primeras están pensadas para pincharse sobre una placa de prototipos y la ultima para diseños portátiles alimentados con baterías Li-Po. La versión LilyPad esta enfocada a aplicaciones para incrustar electrónica en textiles, con una forma pensada para utilizar hilos conductivos en sus terminales. Algunas de estas placas más pequeñas tienen microcontroladores más pequeños, relojes a 8MHz y suelen funcionar a 3,3V en vez de a 5V.
+
+
+
+La versión Esplora es una placa con forma de control de consola de videojuegos e incorpora un gran numero de sensores, tales como micrófono, potenciómetro, sensor de temperatura, sensor de luz, acelerómetro, 4 pulsadores, joystick, buzzer, varios LED y un conector para pantallas.
+
+
+
+Otra placa con un propósito especifico es Robot, que como su nombre indica, esta ideada para construir robots con ella. También hay una familia de placas que incorporan periféricos, como bluetooth y Ethernet.
+
+
+
+Recientemente se ha lanzado Yun, una placa con wi-fi y un microcontrolador MIPS que ejecuta un Linux para gestionar las comunicaciones.
+
+
+
+Finalmente se ha sacado la versión Due, que difiere de las demás principalmente en que utiliza un microcontrolador ARM Cortex M3, un procesador de 32 bits mucho más potente que los pequeños Atmega.
+
+
+
+Gracias a que Arduino se trata de hardware libre, además de las placas oficiales existen multitud de otras placas basadas en Arduino completamente compatibles. Algunas de ellas son:
+\begin{description}
+\item[Netduino] La principal diferencia de esta placa es el lenguaje utilizado para su programación, .Net de Microsoft. 
+\item[Seeeduino] Esta diseñada por el equipo de Seeed Studio, las diferencias con las Arduino oficiales es que monta los componentes en formato SMD, e incorpora unos conectores para una familia de periféricos, distribuidos por ellos mismos, denominada “Grove System”.
+\item[Olimexino] Se trata de un completo rediseño de la placa Arduino, incorpora numerosas mejoras en el apartado de alimentacion, remapeado de botones y leds, y un espaciado de los pines compatible con las placas de prototipado, 
+\end{description}
+
+
+Para nuestro proyecto hemos optado por una de las placas oficiales de Arduino, la Arduino UNO. Las razones de esta elección es que la Arduino UNO es la placa estándar y posiblemente la más conocida y documentada, mantiene el factor de forma para poder usar los shields y nos ofrece suficientes pines y potencia de micro para nuestro proyecto.
+
+
+
+Salió a la luz en septiembre de 2010 sustituyendo su predecesora Duemilanove con varias mejoras de hardware que consisten básicamente en el uso de un USB HID propio en lugar de utilizar un conversor FTDI para la conexión USB. Viene con un Atmega328 con 32Kbytes de ROM para el programa.
+
+
+
+Veamos sus especificaciones.
+
+
+
+\subsection{Arduino UNO R3}
+Como ya hemos visto, esta basada en el microcontrolador ATmega328. Tiene 14 pines de entrada/salida digital, 6 de los cuales soportan PWM; 6 entradas analógicas, un cristal oscilador de 16 MHz, una conexión USB, un conector de alimentación, una cabecera ICSP y un botón de reinicio. En la tabla \ref{tab:arduino_specs} podemos ver un resumen de sus especificaciones.
+
+
+\begin{table}[t]
+    \begin{tabular}{ll}
+        \toprule
+        Microcontrolador               & ATmega328\\ 
+        Voltaje de Operación           & 5V\\ 
+        Voltaje de Entrada Recomendado & 7-12V\\ 
+        Voltaje de Entrada Limites     & 6-20V\\ 
+        Pines Digitales E/S            & 14 (de los cuales 6 soportan salida PWM)\\ 
+        Pines de Entrada Analógica     & 6\\ 
+        Corriente por Pin E/S          & 40 mA\\ 
+        Corriente por Pin de 3.3V      & 50 mA\\ 
+        Memoria Flash                  & 32 KB (ATmega328)\\ 
+        SRAM                           & 2 KB (ATmega328)\\ 
+        EEPROM                         & 1 KB (ATmega328)\\
+        Velocidad de reloj & 16MHz\\ \bottomrule
+    \end{tabular}
+    \caption{Resumen de especificaciones de Arduino UNO}
+    \label{tab:arduino_specs}
+\end{table}
+
+
+\subsubsection{Alimentacion}
+La tarjeta puede ser alimentada a través de una conexión USB o con una fuente de alimentación externa. La fuente de alimentación se selecciona automáticamente.
+
+
+
+La fuente de alimentación externa (no USB) puede provenir de un adaptador AC-DC o una batería. El adaptador debe tener un conector de 2.1mm cuyo conector central debe ser positivo para alimentar a la placa adecuadamente. Si es a través de una batería, esta puede ser conectada en los pines Gnd y Vin con un conector de alimentación.
+
+
+La placa puede operar con una fuente externa de 6 a 20 voltios. Aun así, si es alimentada con un voltaje menor a 7V el pin de 5V podría proporcionar menos de cinco voltios y además la placa puede ser inestable. Si se utiliza un voltaje de alimentación mayor a 12V, el regulador de voltaje se puede calentar y dañar la placa. Por lo tanto el rango recomendado es de 7 a 12 voltios.
+
+
+
+Los pines de alimentación son los siguientes:
+\begin{description}
+\item[VIN] Es el pin del voltaje de entrada a la tarjeta Arduino cuando se utiliza una fuente de alimentación externa (opuesta a los 5 voltios de la conexión USB u otra fuente de alimentación regulada). Se puede suministrar tensión a través de este pin, o mediante el enchufe de alimentación de la placa.
+\item[5V] Este pin genera cinco voltios regulados por el regulador de la placa. La placa puede ser alimentada con energía eléctrica ya sea a partir de la entrada de alimentación (7–12V), el conector USB (5V) o mediante el pin VIN de la placa (7-12V). El suministro de tensión a través de los pines de 5V o 3.3V no pasan por el regulador y pueden dañar la placa.
+\item[3.3V] Este pin proporciona 3.3 voltios generados por el regulador de la placa. El consumo máximo de corriente es de 50 mA.
+\item[GND] Pines de tierra.
+\end{description}
+
+
+
+\subsubsection{Memoria}
+El ATmega328 tiene 32 MB de memoria (0.5 KB son utilizados para el gestor de arranque). También dispone de 2 KB de SRAM y 1 KB de memoria EEPROM (que puede ser leído y escrito con la librería EEPROM).
+
+
+
+\subsubsection{Entradas y Salidas}
+Cada uno de los 14 pines digitales en la tarjeta Arduino Uno pueden ser utilizados como entradas o salidas, usando las funciones pinMode(), digitalWrite() y digitalRead().
+
+Los 14 pines operan a 5 voltios. Cada pin puede proporcionar o recibir un máximo de 40 mA y tienen una resistencia pull-up interna (desconectado por defecto) de 20-50 k\(\Omega\)Además, algunos pines tienen funciones específicas:
+\begin{description}
+\item[Serial] Pines:0 (RX) y 1 (TX). Estos son utilizados para recibir (RX) y transmitir (TX) datos serie TTL. Estos pines están conectados a los puntos correspondientes del chip serial ATmega8U2 USB-to-TTL.
+\item[Interrupciones externas] Pines: 2 y 3. Estos se pueden configurar para disparar una interrupción en un valor bajo, un borde ascendente o descendente o un cambio en el valor. Para realizar esto se utiliza la función attachInterrupt().
+\item[PWM] Pines: 3, 5, 6, 9, 10 y 11. Proporcionan 8 bits de salida PWM con la función analogWrite().
+\item [SPI] Pines: 10 (SS), 11(MOSI), 12 (MISO), 13 (SCK). Estos permiten la comunicación SPI utilizando la librería SPI.
+\item [LED] Pin: 13. Hay un LED incorporado conectado al pin digital 13. Cuando el pin esta en ALTO, el LED está encendido, cuando el pin esta en BAJO, se apaga el LED.
+\end{description}
+
+
+
+La tarjeta Arduino UNO tiene 6 entradas analógicas, etiquetadas desde A0 a A5, cada una de las cuales proporcionan 10 bits de resolución (es decir 1024 valores diferentes). Por defecto miden de 0 a 5 voltios, aunque es posible cambiar el extremo superior de su rango con el pin AREF y la función analogReference(). 
+
+Además, algunos de estos pines tienen funciones específicas:
+\begin{description}
+\item [TWI] A4 o pin SDA y A5 o pin SCL. Soporta la comunicación I2C usando la librería Wire.
+\item [AREF] Referencia de voltaje para las entradas analógicas usando la función analogReference().
+\item [RESET] Provoca un valor BAJO en la línea que reinicia al microcontrolador. Normalmente es utilizado para añadir un botón de reinicio en la placa.
+\end{description}
+
+
+\subsubsection{Comunicaciones}
+La tarjeta Arduino UNO tiene una serie de facilidades para comunicarse con un ordenador a diferencia de otras tarjetas Arduino u otros microcontroladores. El ATmega328 ofrece una comunicación serial UART TTL (5V), la cual está disponible en los pines digitales 0 (RX) y 1 (TX). 
+
+
+
+Un ATmega16U2 en la placa que proporciona los canales de comunicación serie a través de USB y aparece como un puerto virtual COM con el software en el ordenador. El firmware 16U2 utiliza el estándar de los controladores USB COM, por lo que no son necesarios controladores externos. Sin embargo, en Windows, se requiere un archivo con el sufijo “.inf”. 
+
+
+
+El software de Arduino incluye un monitor serie que permite visualizar los datos de texto enviados desde la tarjeta Arduino. Los leds RX y TX en la placa parpadean cuando se están transmitiendo datos a través del chip USB-to-serial y la conexión USB a la computadora (pero no parpadean para la comunicación serie de los pines 0 y 1).
+
+
+
+La librería SoftwareSerial permite la comunicación serie en cualquiera de los pines digitales de la tarjeta Arduino UNO.
+
+
+
+Además el ATmega328 también soporta la comunicación I2C y SPI. El software de Arduino incluye una librería Wire para simplificar el uso del bus I2C. Para la comunicación SPI, se debe utilizar la librería SPI.
+
+
+
+\subsubsection{Programación del ATmega}
+El ATmega328 en la tarjeta Arduino UNO viene pre-grabado con un gestor de arranque que le permite cargar un nuevo código sin el uso de un programador de hardware externo. Se comunica utilizando el protocolo original STK500 (referencia, archivos de cabecera C).
+
+
+
+Además se puede pasar por alto el gestor de arranque y programar el microcontrolador a través d la cabecera ICSP (In Circuit Serial Programming).
+
+
+
+El código fuente del firmware del ATmega16U2 está disponible. El ATmega16U2/8U2 está cargado con un gestor de arranque DFU.
+
+
+
+También se puede utilizar el software FLIP de Atmel (Windows) o el programador DFU (Mac OS X y Linux) para cargar un nuevo firmware. O puede utilizarse la cabecera ISP con un programador externo para sobrescribir el gestor de arranque DFU.
+
+
+
+\subsubsection{Reinicio Automático (Software)}
+En lugar de requerir un pulso físico del botón de reinicio antes de que se cargue el sketch en la placa, la tarjeta Arduino UNO está diseñada de tal manera que puede ser reiniciada mediante el software que se ejecuta cuando está conectada a un computador.
+
+
+
+Una de las líneas de control de flujo de hardware (DTR) del ATmega8U2/16U2 está conectada a la línea de reinicio del ATmega328 a través de un condensador de 100 nano faradios. Cuando se asegura esta línea, la línea de reinicio cae lo suficiente como para restablecer el chip. 
+
+
+
+El software de Arduino utiliza esta capacidad de la tarjeta para cargar el código con sólo pulsar el botón “UPLOAD” en el entorno de Arduino. Esto significa que el gestor de arranque puede tener un tiempo de espera más corta, como la reducción de DTR puede ser bien coordinada con el inicio de la carga.
+
+
+
+Esta configuración tiene otras implicaciones. Cuando la tarjeta Arduino UNO se conecta a un ordenador con Mac OS X o Linux, se pone a cero cada vez que se realiza una conexión a ella desde el software (a través de USB). Para el siguiente medio segundo más o menos, el gestor de arranque se está ejecutando en la tarjeta Arduino UNO. 
+
+
+
+La tarjeta Arduino UNO contiene una traza que se puede cortar para deshabilitar el reinicio automático. Las almohadillas en cada lado de la traza pueden ser soldadas entre sí para volver a habilitar la misma. Esto está marcado como <<RESET-EN>>. También se puede deshabilitar el reinicio automático mediante la conexión de una resistencia de 110 ohmios alimentada con 5V a la línea de reinicio.
+
+
+
+\subsubsection{Protección USB contra sobre corriente}
+La tarjeta Arduino UNO tiene un polifusible reajustable que protege a los puertos USB del computador de cortos y de sobre corriente. Aunque la mayoría de las computadoras ofrecen una protección interna, el fusible proporciona una capa adicional de protección. Si hay más de 500 mA en el puerto USB, el fusible automáticamente corta la conexión hasta que el cortocircuito o sobrecarga sea eliminado.
+
+
+
+
+\section{Gateway}
+Al pensar en que tipo de hardware usar para el gateway de nuestra red, lo primero que se nos viene a la mente es usar un PC convencional. Esto nos otorga algunas ventajas, como una gran potencia de procesamiento o mucho espacio para almacenar datos, por citar algunas. 
+
+
+
+Sin embargo, presenta algunos inconvenientes. Un PC normal tiene un tamaño considerable, lo cual nos obliga a buscar una ubicación adecuada dentro del hogar. \ Aunque se podría combinar las funciones de gateway con las funciones normales de un PC dentro de una casa, esto podría suponer problemas de estabilidad al sistema domótico, ya que un virus, alguna ampliación de hardware mal instalada (un reemplazo de la \ tarjeta de video, añadirle conexión wi-fi, etc...), reinicios por aplicaciones software, y un sin fin de otros problemas potenciales podrían dejar el sistema inutilizado. Por ello este PC debería estar dedicado al sistema domótico.
+
+
+
+Otro inconveniente de usar un PC convencional es el consumo energético. El equipo dedicado a este fin tiene que estar encendido las 24 horas del día, los 365 días del año, y en la actualidad, con los problemas energéticos de nuestra sociedad, el consumo derivado de un PC durante todo ese tiempo es del todo inaceptable. además, si una de las principales razones de instalar un sistema domótico es el ahorro energético general, seria incongruente que el propio sistema derrochara la energía.
+
+
+
+Para dar solución a estos problemas existen desde hace relativamente poco un tipo de placas de desarrollo que contienen un PC completo en el tamaño de una tarjeta de crédito. Son llamadas “ordenador de placa reducida” (en inglés Single Board Computer o SBC), es un PC completo en un sólo circuito. El diseño se centra en un sólo microprocesador con la RAM, E/S y todas las demás características de un computador funcional en un solo chip, llamado de forma genérica SoC(del ingles: System-on-a-Chip), y el resto de componentes que necesita(salidas de video, audio, etc...) integradas en la tarjeta.
+
+
+
+Debido a las grandes niveles de integración y reducción de componentes y conectores, los SBC suelen ser más pequeños, livianos, más confiables y con un mejor manejo del consumo eléctrico que los PC convencionales de escritorio. Por ello son la solución que más se ajusta a nuestras necesidades.
+
+
+
+\subsection{Placas SBC}
+Dentro de este tipo de placas, en el mercado actual destacan principalmente 2 modelos, la Raspberry Pi y la Beaglebone Black. Las dos son de reducidas dimensiones y de bajo presupuesto, caben prácticamente en la superficie de una tarjeta de crédito. y su coste varia entre 35 y 45 euros.
+
+
+
+La Raspberry Pi fue el primer SBC de bajo coste a disposición del público en general. El proyecto de desarrollo de esta tarjeta nació a partir de la comprensión de que los jóvenes estudiantes no eran competentes en los detalles técnicos de la informática, que sus compañeros más veteranos habían aprendido por necesidad. Debido a su menor fondo tecnológico estos estudiantes no eran capaces de rendir al nivel esperado en ellos.
+
+
+
+Para atacar este problema los creadores de la Raspberry Pi desarrollaron el ordenador en miniatura de bajo coste y de \ relativamente alto rendimiento que permitiría a una nueva generación de estudiantes interactuar con sus equipos de una manera que nunca habrían creído posible.
+
+
+
+La Beaglebone Black es una recién llegada a este mundo, sin embargo, lo que ha perdido en tiempo de comercialización, lo ha compensado en capacidad. El Beaglebone Black ha evolucionado a partir de una larga estirpe de productos BeagleBoard hasta la versión actual, un factor de forma pequeño, muy potente, y producto extremadamente extensible que permite a los fabricantes, artistas e ingenieros la capacidad de crear proyectos realmente innovadores.
+
+
+
+La familia de tarjetas de BeagleBoard originalmente fueron diseñadas para proporcionar una plataforma de desarrollo, a un relativo bajo coste, a la comunidad de aficionados interesados en probar los nuevos y potentes SoC. Las primeras tarjetas de BeagleBoard tenían un precio de entre 125 y 145 dolares, lo cual a pesar de que estos sistemas eran muy potentes, no estaban en el punto de precio adecuado para llegar a las masas. Todo esto cambia con la Beaglebone Black, con esta placa han conseguido bajar su precio hasta los 45\euro con lo que ya pueden competir en el mercado.
+
+
+
+\begin{table}[tbp]
+    \begin{tabular}{p{2.5cm}p{5cm}p{5cm}}
+        \toprule
+                                                         & \textbf{BeagleBone Black}                                                             & \textbf{Raspberry Pi Modelo B} \\ \midrule
+        \textbf{Precio}                         & 45,00 \euro                                                                               & 35,00 \euro \\ \midrule
+        \textbf{Procesador}                     & 1GHz AM3359 ARM Cortex A8                                                             & 700 MHz ARM1176JZFS \\ \midrule
+        \textbf{RAM}                            & 512 MB DDR3L @ 400 MHz                                                                & 512 MB DDR3L @ 400 MHz \\ \midrule
+        \textbf{Espacio disponible}                 & 2GB internos para el SO, MicroSD                                                      & SD \\ \midrule
+        \textbf{Conexiones de Video}            & 1 mini-HDMI                                                                           & 1 HDMI, 1 Video compuesto \\ \midrule
+        \textbf{Audio}                          & Estéreo sobre HDMI                                                                    & Estéreo sobre HDMI, Estéreo por jack de 3,5 mm \\ \midrule
+        \textbf{Sistemas Operativos soportados} & Angstrom (por defecto), Ubuntu, Android, ArchLinux, Gentoo, Minix, RISC OS y otros... & Raspbian (Recommended), Android, ArchLinux, FreeBSD, Fedora, RISC OS y otros… \\\midrule
+        \textbf{Consumo}                        & 210-460 mA @ 5V                                                                       & 150-350 mA @ 5V \\ \midrule
+        \textbf{Capacidades de GPIO}            & 65 Pines                                                                              & 8 Pines \\ \midrule
+        \textbf{Periféricos}                    & 1 Host  USB, 1 Cliente Mini-USB, 1 10/100 Mbps Ethernet                               & 2 Hosts  USB, 1 Micro-USB para alimentación, 10/100 Mbps Ethernet, conector para cámara RPi \\ \bottomrule
+    \end{tabular}
+    \caption{Comparativa entre Raspberry Pi y BeagleBone Black}
+    \label{tab:comp_rpi_bbb}
+\end{table}
+
+
+
+
+
+La tabla \ref{tab:comp_rpi_bbb}  nos ofrece un buen resumen de las dos plataformas. Aunque podríamos pensar que ambas plataformas son bastante similares, hay que remarcar dos importantes diferencias:
+\begin{description}
+\item[El procesador] Este es tal vez el factor más importante para determinar la velocidad del sistema. Las configuraciones de stock nos dan un procesador de 1 GHz en la BeagleBone Black y 700 MHz de procesador en la Raspberry Pi. La siguiente característica definitoria que vemos es la arquitectura del procesador. La Raspberry Pi utiliza el conjunto de instrucciones ARMv6 mientras la BeagleBone Black utiliza el conjunto de instrucciones ARMv7, que actualmente es la arquitectura más común entre los sistemas embebidos. Una de las ventajas de la utilización de \ un conjunto de instrucciones más moderno es que el procesador de la BeagleBone Black es más ampliamente apoyado por los desarrolladores de software. Cabe destacar que algunos sistemas operativos ya no son diseñados para ser ejecutado en ARMv6, como por ejemplo Ubuntu que ya ha abandonado el soporte para esta arquitectura.
+\item[Las conexiones] Con dos cabeceras de 46 pines, el BeagleBone Black tiene un total de 92 posibles puntos de conexión. Algunas de estas conexiones están reservados, pero casi todos ellos se puede reconfigurar para ser utilizado en caso necesario. Entre las posibles conexiones se incluyen: 3 buses I2C, un bus CAN y otro SPI, 4 timers, 5 puertos serie, 65 pines GPIO, 8 salidas PWM, y 7 entradas analógicas. En contrapartida la Raspberry Pi solo tiene: 8 pines GPIO, un puerto serie, un bus SPI y otro I2C.
+\end{description}
+
+
+
+Viéndolo todo en conjunto podemos llegar a la conclusión de que la BeagleBone Black tiene mejores especificaciones, y estaríamos en lo cierto. Pero hay una faceta de las plataformas que no se refleja en las especificaciones, esta es la comunidad de usuarios.
+
+
+
+En este aspecto la Raspberry Pi al ser la primera en llegar al gran público y tener un coste más que asequible, se ha ganado una gran base de usuarios. Lo que nos lleva a tener a nuestra disposición multitud de proyectos tanto de profesionales como de aficionados que toman como base la Raspberry Pi. Así, gracias a su popularidad, al igual que como vimos para Arduino, la Raspberry Pi cuenta con una gran base de documentación, tutoriales y libros de consulta de los que hacer uso en caso de ser necesario.
+
+
+
+La BeagleBone Black, aun teniendo mejores especificaciones, se ha visto eclipsada por la fama de la Raspberry y no cuenta con una base de usuarios tan extensa.
+
+
+
+Así que después de conocer ambas plataformas al completo, la conclusión es que lo que nos da demás la BeagleBone Black (más procesador y conexiones) es algo que no va a ser aprovechado en nuestro proyecto, es decir, con el hardware de la Raspberry es más que suficiente para las funciones que esta desempeñara en el proyecto. Esto unido al menor coste de la Raspberry y su comunidad de usuarios hace que nos decantamos por la Raspberry Pi.
+
+
+
+\subsection{Raspberry Pi}
+Raspberry Pi es una SBC de bajo coste desarrollada en Reino Unido por la Fundación Raspberry Pi, con el objetivo de estimular la enseñanza de ciencias de la computación en las escuelas.
+
+
+
+Con unas dimensiones de placa de 8.5 por 5.3 cm, en el modelo B de la Raspberry Pi que es, el que se comercializa ahora, nos encontramos con unas características muy interesantes. En su corazón nos encontramos con un chip integrado Broadcom BCM2835, que contiene un procesador ARM11 con varias frecuencias de funcionamiento y la posibilidad de subirla (overclocking) hasta 1 GHz sin perder la garantía, un procesador gráfico VideoCore IV, y 512 MB de memoria RAM.
+
+
+La fundación da soporte para las descargas de las distribuciones para arquitectura ARM, Raspbian (derivada de Debian), RISC OS 5, Arch Linux ARM (derivado de Arch Linux) y Pidora (derivado de Fedora); y promueve principalmente el aprendizaje del lenguaje de programación Python, y otros lenguajes como Tiny BASIC, C o Perl.
+
+
+
+Las últimas Raspberry Pi cuentan con 512 MB de memoria. Todo ello equivale en la práctica a un ordenador con unas capacidades gráficas similares a la XBOX de Microsoft y con la posibilidad de reproducir vídeo en 1080p.
+
+El diseño no incluye un disco duro o una unidad de estado sólido, ya que usa una tarjeta SD para el almacenamiento permanente; tampoco incluye fuente de alimentación o carcasa.
+
+
+
+En la placa de la Raspberry Pi nos encontramos además con una salida de vídeo y audio a través de un conector HDMI, con lo que conseguiremos conectar la tarjeta tanto a televisores como a monitores que cuenten con dicha conexión. En cuanto a vídeo se refiere, también cuenta con una salida de vídeo compuesto y una salida de audio a través de un minijack.
+
+
+
+Posee una conexión ethernet 10/100 y, si bien es cierto que podría echarse en falta una conexión Wi-Fi, gracias a los dos puertos USB incluidos podremos suplir dicha carencia con un adaptador Wi-Fi USB de terceros si lo necesitamos. Los puertos tienen una limitación de corriente, por lo que si queremos conectar discos duros u otro dispositivos tendríamos que hacerlo a través de un hub USB con alimentación.
+
+
+
+\section{Otro hardware}
+En este apartado se añadiran el resto de elementos hardware que usemos, como en este momento no se exactamente cuales seran, de momento lo dejo en blanco.

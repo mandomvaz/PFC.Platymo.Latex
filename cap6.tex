@@ -1,0 +1,46 @@
+\chapter{Implementación}
+ A lo largo de este capítulo veremos  la arquitectura del sistema, tanto fisica como lógica, los elementos que lo componen y ....... 
+
+Para ello lo primero es definir el escenario sobre el que implantaremos el sistema.
+
+\section{Escenario}
+Para el desarrollo del proyecto necesitamos partir de una base, un escenario concreto sobre el que construir el sistema. Este debe ser lo suficientemente amplio para que una vez acabado podamos extrapolar el sistema domótico a cualquier caso en la vida real.
+
+Para ello, el escenario elegido es una vivienda unifamiliar ya construida y habitada. Ya que así abarcamos a una gran masa de publico que podria beneficiarse de la domótica, a la vez que es facilmente adaptable a viviendas en fase de proyecto.
+
+Una vez elegido el lugar físico en el que se implantará, hay que establecer las funciones que desempeñará el sistema. 
+
+Como vimos anteriormente, un sistema domótico es capaz de manejar muchos aspectos de la vida cotidiana de un hogar, éstas pueden ser alarmas de seguridad, incendios o escape de gases; automatización de persianas y toldos, control de luminarias, apertura y cierre de puertas, y un largo etcétera. 
+
+Actualmente, todas estas funciones son controlables a través de microcontroladores de forma aislada, así que, uno de los objetivos será crear un marco de trabajo en el que poder integrar todas estas funciones trabajando al unísono.
+
+A causa de las limitaciones en tiempo y presupuesto, restringiremos las funciones del sistema al control de las luminarias y                     distintos elementos controlables con un interruptor convencional. 
+
+El escenario quedaría constituido de la siguiente forma:
+\begin{description}
+    \item[Lugar físico] Vivienda unifamiliar construida y habitada.
+        \begin{itemize}
+            \item Cableado de las paredes ya existente.
+            \item Mezcla heterogénea de luminarias(bombillas de bajo consumo, halógenas, fluorescentes, etc...).
+        \end{itemize}
+    \item[Funciones del sistema] Limitado a las luminarias.
+        \begin{itemize}
+            \item Control On/Off.
+            \item Deteccion de movimiento en zonas de paso y baños.
+            \item Control de Escenas.
+            \item Apagado General.
+            \item Simulacion de Presencia.
+        \end{itemize}
+\end{description}
+
+Una vez situados, pasaremos a describir la implementacion del sistema. Lo abordaremos desde dos puntos de vista, a nivel físico, microcontroladores, circuitos y demas elementos tangibles y sus configuraciones; y a nivel lógico, procesos y aplicaciones.
+
+ 
+
+\section{Nivel físico}
+\subsection{Clasificacion de nodos}
+\subsection{Funcionamiento}
+
+\section{Nivel lógico}
+
+\subsection{Estructura }
