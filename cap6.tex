@@ -37,10 +37,56 @@ Una vez situados, pasaremos a describir la implementacion del sistema. Lo aborda
 
  
 
-\section{Nivel físico}
-\subsection{Clasificacion de nodos}
-\subsection{Funcionamiento}
+\section{Arquitectura física}
+A nivel físico el sistema esta basado en una red inalámbrica de sensores convencional, formada por placas Arduino UNO como las motas y una Raspberry Pi como estación base. La Raspberry Pi a su vez, está conectada al router domestico. Este router hace de puente entre la Raspberry Pi y los dispositivos finales que interactuan con el sistema, teléfonos inteligentes, tabletas u ordenadores.  
+
+\subsection{Nodos}
+\subsubsection{Ubicación}
+Para aprovechar los conductos del cableado eléctrico existente, hemos optado por ubicar un nodo de la red en cada habitacion de la vivienda. De esta manera, introducir los cables necesarios es mas sencillo, puesto que todo queda dentro de cada habitacion. Además, hace al sistema mas modulable al poder incorporar las habitaciones poco a poco.
+
+La red de sensores esta configurada en arquitectura de  malla para asegurar la interconexión de todos los nodos. Ya que en una vivienda, al haber numerosas paredes y obstáculos, con otras configuraciones podrían quedar zonas oscuras en la conexion a la red.
+
+\subsubsection{Equipamiento}
+Cada nodo de la red esta equipado con:
+\begin{itemize}
+    \item Arduino UNO.
+    \item Shield XBee.
+    \item Sensor de temperatura.
+\end{itemize}
+Además, los nodos correspondientes a pasillos y baños disponen también de un sensor de presencia.
+
+\subsubsection{Cableado y conexiones}
+ Para poder permitir que los nodos puedan interactuar con la vivienda es necesario introducir algunos cambios a esta.
+ 
+ El primer cambio es convertir los interruptores que haya instalados en sensores para el nodo. Esto es tan sencillo como llevar dos cables desde el nodo al interruptor, uno conectado a tierra y el otro en cualquiera de las entradas digitales del arduino. En la figura ??? se puede ver el esquema de la conexión.
+ 
+ FIGURA ESQUEMA CONEXION INTERRUPTOR-ARDUINO
+ 
+ 
+ El segundo cambio a introducir es posibilitar el accionado de las luminarias de manera digital, es decir, controlado desde el nodo. Para esto utilizaremos el circuito de la figura ????. 
+ 
+ FIGURA CIRCUITO INTERRUPTOR
+ 
+ Este circuito, conocido como relé de estado sólido, nos permite accionar cualquier carga eléctrica desde el nodo. Su funcionamiento es muy sencillo: el nodo activa el led dentro del optoacoplador, este hace que el triac del optoacoplador empiece a conducir, lo cual activa el triac principal, que es el que maneja realmente la carga. 
+ 
+ Hemos elegido como optoacoplador el MOC3041 porque incorpora <<detección de paso por cero>>. El optoacoplador espera a que la señal de  alterna pase por cero para abrir o cerrar el paso de corriente. Este comportamiento reduce el estrés en los aparatos, ya que la señal les llega gradualmente.
+  
+En la figura ???? se muestra esquema de conexión entre el Nodo, el relé y una lampara.
+
+FIGURA CONEXION ARDUINO-RELE-LAMPARA
+
+Cada Arduino dispone de 14 pines de entrada/salida digitales, estos son los que utilizaremos para conectar los interruptores y actuadores(relés). Los pines analogicos los reservaremos para conectar los sensores, en nuestro caso el sensor de temperatura y el de presencia.
+
+
+\subsection{Estación base}
+La estación base, una  Raspberry Pi en nuestro sistema, es la encargada de gestionar todo el sistema. Va equipada con un modulo XBee, conectado a traves de un puerto USB, para las comunicaciones con la red de sensores. Y para las comunicaciones con el router hay dos opciones: puerto Ethernet, incorporado, directo al router; o añadir un dongle Wi-Fi en el otro puerto USB.
+
+
+
+
+
+
+
 
 \section{Nivel lógico}
 
-\subsection{Estructura }
