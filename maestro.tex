@@ -12,6 +12,9 @@
 \usepackage{eurosym}
 \usepackage{graphicx}
 \usepackage{listings}
+\usepackage{biblatex}
+
+\usepackage[pdftex, hidelinks]{hyperref}
 
 
 %espacio entre parrafos y sangria
@@ -20,7 +23,8 @@
 
 
 %ENCABEZADOS Y PIES DE PAGINA
-\setlength{\headheight}{15pt}
+\setlength{\headheight}{41.4pt}
+\setlength{\topmargin}{-3mm}
 
 \renewcommand{\chaptermark}[1]{%
     \uppercase{
@@ -40,15 +44,18 @@
 \fancyhf{}
 \fancyfoot[RO,LE]{\thepage}
 \fancyhead[CO]{\leftmark}
-\fancyhead[LE]{Universidad de Sevilla}
-\fancyhead[RE]{PFC Manuel Domínguez}
+%\fancyhead[LE]{Universidad de Sevilla}
+\fancyhead[LE]{\includegraphics[width=1.5cm]{imagenes/logousnegro.jpg}}
+\fancyhead[RE]{REDES DE SENSORES APLICADAS A LA DOMÓTICA}
 
 
 
 
 \usepackage{emptypage}%las paginas de relleno en blanco
 
+\usepackage{csquotes}
 
+\addbibresource{bibliog.bib}
 
 
 \author{Manuel Domínguez Vázquez}
@@ -64,4 +71,6 @@
 	\include{cap4}
     \include{cap5}
     \include{cap6}
+    \include{cap7}
+    
 \end{document}

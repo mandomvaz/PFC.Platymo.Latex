@@ -364,7 +364,9 @@ Estas placas gozan de una gran popularidad actualmente, ya que gracias a su faci
 Debido a la popularidad que tienen podemos encontrar muchos modelos distintos en el mercado. Por mencionar algunos, destacamos: 
 \begin{description}
 \item[Arduino] Podríamos decir que es la responsable de la popularidad que tienen estas placas hoy en día, aunque existen placas anteriores hasta la llegada de Arduino no empezaron a hacerse populares. Esta basada en la familia AVR de Atmel, siendo el Atmega328 uno de los más usados. Dispone un sistema de añadidos llamados “shields”, para extender las funcionalidades de la placa, tales como conexión WiFi o Xbee, control de servos y un largo etcétera. Otro detalle a destacar es la filosofía open-source detrás de la plataforma, lo que la ha llevado a tener una gran comunidad de usuarios y profesionales detrás de esta plataforma.
+
 \item[Pinguino] Es una plataforma similar a Arduino y compatible con esta, aunque no al 100\%. Esta basada en los microcontroladores PIC de Microchip. El objetivo de esta plataforma es llevar la simplicidad del código de Arduino a los micros PIC. También es open-source, aunque su comunidad no es tan grande como la de Arduino, por lo que la documentación no es tan extensa. Un punto negativo es que se vende sin ensamblar, por lo que un usuario menos experto podría tener problemas a la hora de montarlo.
+
 \item[Launchpad] de Texas Instruments, esta basada en la familia de microcontroladores MSP430 de la misma empresa. Dichos microcontroladores se caracterizan por un extremadamente bajo consumo de potencia y precios también muy bajos, incluso menores que algunos microcontroladores de 8 bits disponibles actualmente en el mercado. Al igual que Arduino también disponte de un sistema similar de añadidos, llamados en este caso “Boosterpacks”. El inconveniente de esta plataforma es la escasa cantidad de documentación.
 \end{description}
 
@@ -489,13 +491,14 @@ Como ya hemos visto, esta basada en el microcontrolador ATmega328. Tiene 14 pine
 
 
 \begin{table}[t]
+    \centering
     \begin{tabular}{ll}
         \toprule
         Microcontrolador               & ATmega328\\ 
         Voltaje de Operación           & 5V\\ 
         Voltaje de Entrada Recomendado & 7-12V\\ 
         Voltaje de Entrada Limites     & 6-20V\\ 
-        Pines Digitales E/S            & 14 (de los cuales 6 soportan salida PWM)\\ 
+        Pines Digitales E/S            & 14 ( 6 soportan salida PWM)\\ 
         Pines de Entrada Analógica     & 6\\ 
         Corriente por Pin E/S          & 40 mA\\ 
         Corriente por Pin de 3.3V      & 50 mA\\ 
@@ -603,7 +606,7 @@ En lugar de requerir un pulso físico del botón de reinicio antes de que se car
 
 
 
-Una de las líneas de control de flujo de hardware (DTR) del ATmega8U2/16U2 está conectada a la línea de reinicio del ATmega328 a través de un condensador de 100 nano faradios. Cuando se asegura esta línea, la línea de reinicio cae lo suficiente como para restablecer el chip. 
+Una de las líneas de control de flujo de hardware (DTR) del ATmega8/16 está conectada a la línea de reinicio del ATmega328 a través de un condensador de 100 nano faradios. Cuando se asegura esta línea, la línea de reinicio cae lo suficiente como para restablecer el chip. 
 
 
 
@@ -737,8 +740,3 @@ En la placa de la Raspberry Pi nos encontramos además con una salida de vídeo 
 
 
 Posee una conexión ethernet 10/100 y, si bien es cierto que podría echarse en falta una conexión Wi-Fi, gracias a los dos puertos USB incluidos podremos suplir dicha carencia con un adaptador Wi-Fi USB de terceros si lo necesitamos. Los puertos tienen una limitación de corriente, por lo que si queremos conectar discos duros u otro dispositivos tendríamos que hacerlo a través de un hub USB con alimentación.
-
-
-
-\section{Otro hardware}
-En este apartado se añadiran el resto de elementos hardware que usemos, como en este momento no se exactamente cuales seran, de momento lo dejo en blanco.

@@ -2,30 +2,30 @@
 En este capítulo realizaremos un repaso por las distintas tecnologías de software, y sus características, usadas para la confección de este proyecto. Entre estas tecnologías  se encuentran  varios lenguajes de programación, servidores web, servidores de bases de datos y distintos frameworks.
 
 
-Para poner un poco de orden, desde el punto de vista del software, podemos distinguir tres bloques claramente diferenciados: la programación de los nodos, el programa servidor y la aplicación de control. Cada uno de ellos usa una combinación distinta de tecnologías para llevar a cabo su función.  Empezaremos desde el nivel más bajo, es decir, la programación de los nodos; para continuar hasta la aplicacion de control, el nivel mas alto, la parte que interactúa con el usuario.
+Para poner un poco de orden, desde el punto de vista del software, podemos distinguir tres bloques claramente diferenciados: la programación de los nodos, el programa servidor y la aplicación de control. Cada uno de ellos usa una combinación distinta de tecnologías para llevar a cabo su función.  Empezaremos desde el nivel más bajo, es decir, la programación de los nodos; para continuar hasta la aplicación de control, el nivel mas alto, la parte que interactúa con el usuario.
  
-\section{Programacion de los nodos}
-Como ya se vio en el anterior capítulo, nuestra elección para los nodos fue un Arduino UNO. 
+\section{Programación de los nodos}
+Como ya se vio en el anterior capítulo, nuestra elección para los nodos es un Arduino UNO. 
 
-Arduino dispone de un sencillo entorno de desarrollo que permite escribir programas, compilarlos y transferirlos al hardware. Al igual que el resto del entorno  Arduino, se  puede acceder al codigo fuente, el cual esta escrito en C, C{}\verb!++! y Java.
+Arduino dispone de un sencillo entorno de desarrollo que permite escribir programas, compilarlos y transferirlos al hardware. Al igual que el resto del entorno  Arduino, se  puede acceder al código fuente, el cual esta escrito en C, C{}\verb!++! y Java.
 
-El IDE se compone del propio editor de texto, un conjunto de librerias y las herramientas de compilacion y programacion necesarias. Esta disponible en los tres sistemas operativos mayoritarios, Windows, Mac Os X y Linux.
+El IDE se compone del propio editor de texto, un conjunto de librerías y las herramientas de compilación y programación necesarias. Esta disponible en los tres sistemas operativos mayoritarios, Windows, Mac Os X y Linux.
 
-El lenguaje de programacion de Arduino esta basado en Processing/Wiring, el cual a su vez se basa en C.
+El lenguaje de programación de Arduino esta basado en Processing/Wiring, el cual a su vez se basa en C.
 
 \subsection{El lenguaje de Arduino}
-En Arduino  el codigo fuente se escribe en un lenguaje basado en Processing. Este lenguaje es simplemente un conjunto de funciones en C y C++ a las que se puede llamar desde el código.  Todas las construcciones estándar de C y C{}\verb!++! deben trabajar en Arduino.
+En Arduino  el código fuente se escribe en un lenguaje basado en Processing. Este lenguaje es simplemente un conjunto de funciones en C y C++ a las que se puede llamar desde el código.  Todas las construcciones estándar de C y C{}\verb!++! deben trabajar en Arduino.
 
-El entorno de Arduino lleva a cabo algunas transformaciones para asegurarse que el código es formalmente correcto para C o C++. Después pasa al compilador avr-gcc, que trasforma el código a ficheros objeto. Entonces este codigo se combina  las librerías estándar de Arduino que implementan las funciones básicas como digitalWrite() o Serial.print().
+El entorno de Arduino lleva a cabo algunas transformaciones para asegurarse que el código es formalmente correcto para C o C++. Después pasa al compilador avr-gcc, que trasforma el código a ficheros objeto. Entonces este código se combina  las librerías estándar de Arduino que implementan las funciones básicas como digitalWrite() o Serial.print().
 
 El resultado es un único archivo hexadecimal Intel, que contiene los bytes necesarios para ser guardados en la memoria de programas del chip de la placa Arduino. Este archivo entonces se graba en la placa: transmitiéndolo vía USB o puerto serie, a través del bootloader que lleva incorporado el chip o con hardware de programación externo.
 
-En definitiva, Arduino se programa en C++ con todas las caracteristicas de este lenguaje: construcciones y estructuras propias del lenguaje, sintaxis, tipos de datos, declaraciones de variables y funciones, incluso punteros. Ademas de las librerias de funciones  propias de Arduino,  para leer  y escribir en los pines, etc... Con la única restriccion de seguir una estructura de programa  predefinida.
+En definitiva, Arduino se programa en C++ con todas las características de este lenguaje: construcciones y estructuras propias del lenguaje, sintaxis, tipos de datos, declaraciones de variables y funciones, incluso punteros. Ademas de las librerías de funciones  propias de Arduino,  para leer  y escribir en los pines, etc... Con la única restricción de seguir una estructura de programa  predefinida.
 
 
 
 \subsubsection{Estructura del programa}
-En este lenguaje las operaciones de inicializacion y ejecuccion de tareas tienen sus propias estructuras \emph{setup()} y \emph{loop()}. Asi la plantilla basica de un programa Arduino seria:
+En este lenguaje las operaciones de inicialización y ejecución de tareas tienen sus propias estructuras \emph{setup()} y \emph{loop()}. Así la plantilla básica de un programa Arduino seria:
 
 \begin{verbatim}
 void setup(){
@@ -38,9 +38,9 @@ void loop(){
 \end{verbatim}
 
 
-La primera funcion, \emph{setup()}, se ejecutará unicamente cuando Arduino arranca. En ella se pueden realizar las tareas de inicializacion de dispositivos, pines y datos.
+La primera función, \emph{setup()}, se ejecutará unicamente cuando Arduino arranca. En ella se pueden realizar las tareas de inicialización de dispositivos, pines y datos.
 
-La segunda funcion, \emph{loop()}, se ejecuta continuamente una vez que ha finalizado la funcion anterior. En la mayoria de las aplicaciones esta funcion sera la que contenga la mayor parte del codigo.
+La segunda función, \emph{loop()}, se ejecuta continuamente una vez que ha finalizado la función anterior. En la mayoría de las aplicaciones esta función sera la que contenga la mayor parte del código
 
 \subsubsection{Funciones básicas de Arduino}
 En Arduino hay varias funciones predefinidas, tareas comunes que ofrece para que el programador las pueda utilizar. Algunas de las mas comunes son:
@@ -49,41 +49,41 @@ En Arduino hay varias funciones predefinidas, tareas comunes que ofrece para que
         \begin{itemize}
             \item Analógicas
                 \begin{description}
-                    \item[analogRead()] devuelve el valor leido con el convertidor analogico-digital del microcontrolador.
-                    \item[analogWrite()] escribe el valor indicado, de tamaño 1 byte, de forma analogica, empleando un modulador PWM.
-                    \item[analogReference()] configura el convertidor analogico-digital para usar las referencias por defecto (alimentacion), referencias internas o externas (pin AREF).
+                    \item[analogRead()] devuelve el valor leído con el convertidor analógico-digital del microcontrolador.
+                    \item[analogWrite()] escribe el valor indicado, de tamaño 1 byte, de forma analógica, empleando un modulador PWM.
+                    \item[analogReference()] configura el convertidor analógico-digital para usar las referencias por defecto (alimentación), referencias internas o externas (pin AREF).
                 \end{description}
             \item Digital
                 \begin{description}
                     \item[pinMode()] indica si un determinado pin es de entrada o salida.
                     \item[digitalRead()] devuelve un valor HIGH o LOW correspondiente al nivel del pin indicado.
-                    \item[digitalWrite()] saca un nivel de tension HIGH o LOW por un pin del controlador.
+                    \item[digitalWrite()] saca un nivel de tensión HIGH o LOW por un pin del controlador.
                 \end{description}
         \end{itemize}
     \item Tiempo
         \begin{description}
             \item[delay()] realiza un retardo del numero indicado de milisegundos.
             \item[delayMicroseconds()] realiza un retardo del numero indicado de microsegundos.
-            \item[millis()] devuelve los milisegundos que han pasado desde que el programa arrancó. Como los tipos de datos tienen un tamaño finito, este valor se desborda, aproximadamente a los 50 dias de funcionamiento continuo.
-            \item[micros()] devuelve los microsegundos que han pasado desde que el programa arrancó. Se producira un desbordamiento cada 70 minutos aproximadamente.
+            \item[millis()] devuelve los milisegundos que han pasado desde que el programa arrancó. Como los tipos de datos tienen un tamaño finito, este valor se desborda, aproximadamente a los 50 días de funcionamiento continuo.
+            \item[micros()] devuelve los microsegundos que han pasado desde que el programa arrancó. Se producirá un desbordamiento cada 70 minutos aproximadamente.
         \end{description}
-    \item Manipulacion de bits y bytes
+    \item Manipulación de bits y bytes
         \begin{description}
             \item[lowByte()] devuelve el byte de menor peso de una variable de 2 o mas bytes.
             \item[highByte] devuelve el byte de mas peso de una variable de 2 o mas bytes.
         \end{description}
     \item Interrupciones
         \begin{description}
-            \item[interrupts()] habilita las interrupciones pra realizar tareas en respuesta a determinados eventos.
+            \item[interrupts()] habilita las interrupciones para realizar tareas en respuesta a determinados eventos.
             \item[noInterrupts()] deshabilita las interrupciones.
-            \item[attachInterrupt()] programa una interrupcion externa.
+            \item[attachInterrupt()] programa una interrupción externa.
         \end{description}
     \item Serial
         \begin{description}
             \item[begin()] inicializa el puerto serie indicando su velocidad.
-            \item[pritn(), println()] envian datos alfanumericos por el pueto serie.
+            \item[print(), println()] envían datos alfanuméricos por el puerto serie.
             \item[available] devuelve el numero de bytes a la espera de leerse en el buffer.
-            \item[read()] devuelve un byte leido por el puerto serie, el byte leido se elimina del buffer.
+            \item[read()] devuelve un byte leído por el puerto serie, el byte leído se elimina del buffer.
             \item[write()] escribe datos en binario por el puerto serie.
             \item[peek()] lee un byte pero no lo elimina del buffer.
             \item[flush()] limpia los buffers.
@@ -91,7 +91,7 @@ En Arduino hay varias funciones predefinidas, tareas comunes que ofrece para que
         \end{description}
 \end{itemize}
 
-Esto es solo un extracto de las funciones mas comunes incluidas en las librerias de Arduino. Gracias a la comunidad de Arduino y a la filosofia de codigo abierto, se puede encontrar una gran cantidad de librerias. Lo que permite no tener que reinventar la rueda cada vez que se quiera utilizar un dispositivo nuevo y aprovechar el trabajo de la comunidad.
+Esto es solo un extracto de las funciones mas comunes incluidas en las librerias de Arduino. Gracias a la comunidad de Arduino y a la filosofía de código abierto, se puede encontrar una gran cantidad de librerias. Lo que permite no tener que reinventar la rueda cada vez que se quiera utilizar un dispositivo nuevo y aprovechar el trabajo de la comunidad.
 
 Algunas librerias destacadas son:
 \begin{description}
@@ -102,22 +102,22 @@ Algunas librerias destacadas son:
     \item[EEPROM] acceso a nivel de bytes de la memoria EEPROM del microcontrolador
     \item[SD] manejo de memorias SD card para leer y escribir.
     \item[LiquidCrystal] controlar pantallas LCD.
-    \item[TFT] controlar pantallas TFT con texto e imagenes.
+    \item[TFT] controlar pantallas TFT con texto e imágenes.
     \item[Servo] control de motores servo.
     \item[Stepper] control de motores paso a paso.
     \item[GSM] comunicacion en redes GSM o SPRS usando el shield GSM.
-    \item[Ethernet] conenexiones a Internet a traves del shield Ethernet.
-    \item[WiFi] conenexiones a Internet a traves del shield WiFi.
+    \item[Ethernet] conexiones a Internet a través del shield Ethernet.
+    \item[WiFi] conexiones a Internet a través del shield WiFi.
 \end{description}
 
 
 \section{Servidor}
-Este programa es la piedra angular del proyecto. Básicamente su función consiste en conectar la red de sensores con la aplicación de usuario. Se encarga de recibir las peticiones de la aplicacion de control, pasar estas a la red y recabar y almacenar la información de los sensores. 
+Este programa es la piedra angular del proyecto. Básicamente su función consiste en conectar la red de sensores con la aplicación de usuario. Se encarga de recibir las peticiones de la aplicación de control, pasar estas a la red y recabar y almacenar la información de los sensores. 
 
 Debido a las características y funciones tan especificas del programa, este se desarrollará desde cero. Para ello necesitamos un lenguaje de programación con, al menos, las siguientes características:
 \begin{description}
     \item[Soporte multihilo] Para poder atender varias peticiones simultaneas de forma eficiente.
-    \item[Soporte para comunicaciones por puerto serie] La comunicacion con la red de sensores se realiza mediante este método.
+    \item[Soporte para comunicaciones por puerto serie] La comunicación con la red de sensores se realiza mediante este método.
     \item[Soporte para Raspberry Pi] Puesto que es el dispositivo donde se ejecutará, seria deseable que las características únicas de esta placa estén soportadas.
  \end{description}
  
@@ -162,16 +162,16 @@ Debido a las características y funciones tan especificas del programa, este se 
     \end{description}
     
 \section{Aplicación de control}
-Esta aplicacion es el punto de entrada de usuario al sistema. Para su desarrollo hemos optado por el modelo de aplicación web, ya que necesitamos que esta aplicación se pueda acceder desde cualquier punto de la vivienda, independientemente del dispositivo o sistema operativo usado. Este modelo es el que mejor se adapta a nuestras necesidades.
+Esta aplicación es el punto de entrada de usuario al sistema. Para su desarrollo hemos optado por el modelo de aplicación web, ya que necesitamos que esta aplicación se pueda acceder desde cualquier punto de la vivienda, independientemente del dispositivo o sistema operativo usado. Este modelo es el que mejor se adapta a nuestras necesidades.
 
 Más detalladamente sus ventajas son:
 \begin{description}
-    \item[Instalación] No hace falta instalar nada en los dispositivos cliente, ni la aplicacion, ni archivos adicionales. Basta con tener un navegador.
+    \item[Instalación] No hace falta instalar nada en los dispositivos cliente, ni la aplicación, ni archivos adicionales. Basta con tener un navegador.
     \item[Compatibilidad] Es completamente compatible con cualquier dispositivo o sistema operativo gracias a los estándares.
     \item[Multiplataforma] Al solo necesitar un navegador, la aplicación es independiente de plataforma y dispositivo.
     \item[Portable] Al ejecutarse sobre un servidor web, cambiar la máquina servidora es tan sencillo como instalar un servidor web en la máquina destino.
     \item[Acceso Inmediato] Pueden ser accedidas desde cualquier dispositivo conectado a la red desde donde se accede a la aplicación. 
-    \item[Menos requerimentos de hardware] Este tipo de aplicación no consume (o consume muy poco) espacio en disco del cliente y también es mínimo el consumo de memoria RAM en comparación con las instaladas localmente.
+    \item[Menos requerimientos de hardware] Este tipo de aplicación no consume (o consume muy poco) espacio en disco del cliente y también es mínimo el consumo de memoria RAM en comparación con las instaladas localmente.
 \end{description}
 
 
@@ -186,7 +186,7 @@ La combinación específica de los tres primeros se conoce como <<stack>>.
 
 Para el proyecto hemos elegido el stack LAMP (Linux, Apache, MySQL y PHP), este es uno de los mas populares, probados y robustos que se pueden encontrar. Incluye: Apache como servidor web, MySQL para el manejo de las bases de datos, y PHP como lenguaje del lado del servidor.
 
-Para los lenguajes del lado del cliente de la aplicacion usaremos la combinación basica de aplicaciones web, HTML, CSS y Javascript; en sus últimas revisiones. 
+Para los lenguajes del lado del cliente de la aplicación usaremos la combinación básica de aplicaciones web, HTML, CSS y Javascript; en sus últimas revisiones. 
 
 \subsection{Servidor web, Apache}
 Apache es un servidor de web. Un servidor web es un software que responde a las solicitudes de los navegadores web. En estos momentos, Apache es uno de los servidores web más populares del mundo. Ello se debe, entre otras cosas, a que Apache es un software de alta calidad y de código abierto (open source), lo que significa que puede descargarse de forma gratuita desde Internet.
@@ -203,24 +203,24 @@ Apache es uno de los mayores éxitos del software libre y su aceptación entre l
  Su desarrollo es continuo y su portabilidad le ha llevado a plataformas como Windows NT/2000/XP y Windows 95/98/Me,
 a los sistemas Unix y a plataformas como MacOS. 
 
-Una de las principales caracteristicas que presenta Apache es que no solo funciona en la mayoria de las versiones de Unix, sino que, ademas funciona en Windows y en muchos otros sistemas operativos tanto de escritorio como de tipo servidor.
+Una de las principales características que presenta Apache es que no solo funciona en la mayoría de las versiones de Unix, sino que, ademas funciona en Windows y en muchos otros sistemas operativos tanto de escritorio como de tipo servidor.
 
-Apache presenta nuchas otras caracteristicas, entre ellas un elaborado indice de directorios; un directorio de alias; negociacion de contenidos; informe de errores HTTP configurable; ejecucion SetUID de programas CGI; gestion de recursos para procesos hijos; integracion de imagenes del lado servidor; reescritrura y comprobacion ortografica de URL.
+Apache presenta muchas otras características, entre ellas un elaborado indice de directorios; un directorio de alias; negociacion de contenidos; informe de errores HTTP configurable; ejecución SetUID de programas CGI; gestion de recursos para procesos hijos; integracion de imagenes del lado servidor; reescritrura y comprobación ortográfica de URL.
 
-El resto de caracteristicas importantes de Apache son:
+El resto de características importantes de Apache son:
 
 \begin{description}
-    \item[Configuracion basada en un archivo] El servidor Apache no posee una interfaz de usuario grafica para su administracion. Se trata de un sencillo archivo de configuracion llamado <<httpd.conf>>. Únicamente se necesita un editor de texto para configurar el servidor. Sin embargo, es lo suficientemente flexible para permitirle repartir la configuracion del host virtual en múltiples archivos para no sobrecargar un único archivo con toda la gestión de las múltiples configuraciones de servidores virtuales.
+    \item[Configuración basada en un archivo] El servidor Apache no posee una interfaz de usuario gráfica para su administración. Se trata de un sencillo archivo de configuración llamado <<httpd.conf>>. Únicamente se necesita un editor de texto para configurar el servidor. Sin embargo, es lo suficientemente flexible para permitirle repartir la configuración del host virtual en múltiples archivos para no sobrecargar un único archivo con toda la gestión de las múltiples configuraciones de servidores virtuales.
     
-    \item[Soporte para CGI] Apache soporta CGI utilizando los módulos mod\_cgi y mod\_cgid. Aporta caracteristicas extendidas como personalizacion de las variables de entorno y soporte de reparacion de errores o debugging.
+    \item[Soporte para CGI] Apache soporta CGI utilizando los módulos mod\_cgi y \\mod\_cgid. Aporta características extendidas como personalización de las variables de entorno y soporte de reparación de errores o debugging.
     
     \item[Soporte de host virtuales] Apache es ademas uno de los primeros servidores web en soportar tanto host basados en IP como host virtuales.
     
-    \item[Soporte de autenticacion HTTP] Apache soporta autenticacion basica basada en la web. Esta tambien preparado para autentificion basada en la digestion de mensajes.
+    \item[Soporte de autenticación HTTP] Apache soporta autenticacion basica basada en la web. Esta tambien preparado para autentificación basada en la digestión de mensajes.
     
    \item[Soporte de scripts PHP] Apache ofrece un amplio soporte de PHP mediante el modulo mod\_php.
    
-   \item[Soporte de Secured Socket Layer(SSL)] Se puede crear facilmente un sitio web con SSL utilizando OpenSSL y el modulo mod\_ssl.
+   \item[Soporte de Secured Socket Layer(SSL)] Se puede crear fácilmente un sitio web con SSL utilizando OpenSSL y el modulo mod\_ssl.
 \end{description}
 
 
@@ -238,16 +238,16 @@ Sus principales objetivos han sido la velocidad y la robustez. Es un SGBD sencil
 
 Existen en su versión actual distintos motores de almacenamiento de datos, entre los que destacan MyISAM (permite índices por cadenas completas) y InnoDB (que permite el uso de transacciones) o la incorporación de buffers en memoria que permiten agilizar la respuesta de sus resultados. 
 
-Son muchas las razones para escoger MySQL como solucion de mision critica
-para la administracion de datos:
+Son muchas las razones para escoger MySQL como solución de misión crítica
+para la administración de datos:
 
 \begin{description}
     \item[Coste] El coste de MySQL es gratuito para la mayor parte de los usos.
     \item[Asistencia] Gracias a que es software libre, existe una nutrida y activa comunidad de usuarios de MySQL.
-    \item[Velocidad]  MySQL es mucho mas rapido que la mayor parte de sus rivales.
-    \item[Funcionalidad] MySQL dispone de muchas de las funciones que exigen los desarrolladores, como compatibilidad completa con ACID,  compatibilidad para la mayor parte de SQL ANSI, volcados online, duplication, funciones SSL e integracion con la mayor parte de 10s entornos de programacion. Asi mismo, se desarrolla y actualiza de forma mucho mas rapida que muchos de sus rivales.
-    \item[Portabilidad] MySQL se ejecuta en la inmensa mayoria de sistemas operativos y, la mayor parte de los casos, los datos se pueden transferir de un sistema a otro sin dificultad.
-    \item[Facilidad de uso] MySQL resulta facil de utilizar y de administrar. Gran parte de las viejas bases de datos presentan problemas por utilizar sistemas obsoletos, lo que complica innecesariamente las tareas de administracion. Las herramientas de MySQL son potentes y flexibles, sin sacrificar su capacidad de uso.
+    \item[Velocidad]  MySQL es mucho mas rápido que la mayor parte de sus rivales.
+    \item[Funcionalidad] MySQL dispone de muchas de las funciones que exigen los desarrolladores, como compatibilidad completa con ACID,  compatibilidad para la mayor parte de SQL ANSI, volcados online, duplication, funciones SSL e integración con la mayor parte de 10s entornos de programación. Así mismo, se desarrolla y actualiza de forma mucho mas rápida que muchos de sus rivales.
+    \item[Portabilidad] MySQL se ejecuta en la inmensa mayoría de sistemas operativos y, la mayor parte de los casos, los datos se pueden transferir de un sistema a otro sin dificultad.
+    \item[Facilidad de uso] MySQL resulta fácil de utilizar y de administrar. Gran parte de las viejas bases de datos presentan problemas por utilizar sistemas obsoletos, lo que complica innecesariamente las tareas de administración. Las herramientas de MySQL son potentes y flexibles, sin sacrificar su capacidad de uso.
 \end{description}
 
 \begin{figure}[ht]
@@ -292,7 +292,7 @@ PHP ocupa la parte de funcionalidad y la de interfaz (habla con el servidor web,
 
 \begin{figure}[htp]
     \centering
-    \includegraphics[width=0.8\textwidth]{imagenes/estructura_php.jpg}
+    \includegraphics[width=0.8\textwidth]{imagenes/estructura_php.png}
     \label{fig:estructuraphp}
     \caption{Estructura interna de PHP}
 \end{figure}
@@ -346,7 +346,7 @@ Es más ligero y compatible con cualquier navegador, su desventaja es que posee 
 HTML5
 Finalmente llega HTML5, recoge todas las ventajas que introdujo el XHTML y elimina bastante restricciones y limitaciones.
 Es más ligero al ser más sencillo y simple el código, lo que permite que las paginas escritas en este lenguaje carguen mas rápido en el navegador.
-Si aun no fuera suficiente, introduce infinidad de opciones que hasta ahora estaban vedadas a las páginas web, como insertar directamente video, música, y casi cualquier elemento.
+Si aun no fuera suficiente, introduce infinidad de opciones que hasta ahora estaban vedadas a las páginas web, como insertar directamente vídeo, música, y casi cualquier elemento.
 
 \subsubsection{Novedades de HTML 5}
 
@@ -354,14 +354,14 @@ En términos de Markup, el HTML5 introduce algunos elementos que hacen que se ad
 
 Con el uso de HTML5, se puede reducir la dependencia de los plug-ins que tenemos que tener instalados para poder ver una determinada web. Caso emblemático, el de Adobe Flash, que se ve claramente perjudicado por la instauración de este estándar. Por otro lado, fue un avance importante para dispositivos que de forma nativa no soportaban Flash, y que no soportaban tampoco plug-ins necesarios para hacerlo. Pero además, con HTML5 se amplía el horizonte del desarrollo de aplicaciones que pueden ser usadas en una multiplicidad de dispositivos.
 
-Gracias a HTML5, los usuarios pueden acceder a sitios web de manera offline, sin estar conectados a internet. Se suma también la funcionalidad de drag and drop, y también la edición online de documentos ampliamente popularizada por Google Docs. La geolocalización es uno de sus puntos fuertes, pero por otro lado, las etiquetas diseñadas especialmente para el audio y el video ahorran la necesidad de tener que tener un plug-in.
+Gracias a HTML5, los usuarios pueden acceder a sitios web de manera offline, sin estar conectados a internet. Se suma también la funcionalidad de drag and drop, y también la edición online de documentos ampliamente popularizada por Google Docs. La geolocalización es uno de sus puntos fuertes, pero por otro lado, las etiquetas diseñadas especialmente para el audio y el vídeo ahorran la necesidad de tener que tener un plug-in.
 
 \subsubsection{Las nuevas etiquetas}
 El lenguaje HTML funciona a través de marcas de sentido llamadas etiquetas. Las etiquetas son la herramienta fundamental para que los navegadores puedan interpretar el código y permitirnos ver imágenes, texto, párrafo, y estructuras. Los navegadores vendrían a ser como “traductores” de las etiquetas, y con HTML5, se agregan nuevas etiquetas para utilizar que nos ahorran el uso de otros productos que se usaban para complementar y hacer cosas que con el simple HTML no se podían hacer. 
 
 HTML5 fue creado para hacer que el proceso de escribir el código sea más simple y más lógico, por decirlo de una forma. La sintaxis de HTML5 se destaca, como dijimos, en el ámbito multimedia, pero son bastantes las etiquetas introducidas para generar una mejoría.
 
-La idea detrás de HTML5 es que podamos visualizar el contenido multimedia variado que podemos encontrar en internet aún cuando nos encontramos en dispositivos de gama baja que no podrían soportarlo. No solamente contamos con etiquetas especiales como audio, video y canvas, sino también integración con contenidos de gráficos en vectores (que anteriormente se conocía como la etiqueta object). Con estas etiquetas, los usuarios pueden consumir videos y canciones, por ejemplo, sin necesidad de instalar nada de forma adicional.
+La idea detrás de HTML5 es que podamos visualizar el contenido multimedia variado que podemos encontrar en Internet aún cuando nos encontramos en dispositivos de gama baja que no podrían soportarlo. No solamente contamos con etiquetas especiales como audio, vídeo y canvas, sino también integración con contenidos de gráficos en vectores (que anteriormente se conocía como la etiqueta object). Con estas etiquetas, los usuarios pueden consumir vídeos y canciones, por ejemplo, sin necesidad de instalar nada de forma adicional.
 
 Las más importantes de las nuevas etiquetas creadas son:
 
@@ -394,7 +394,7 @@ El CSS es un lenguaje de estilos empleado para definir la presentación, el form
 
 Las hojas de estilos nacen de la necesidad de diseñar la información de tal manera que podemos separar el contenido de la presentación y, así, por una misma fuente de información, generalmente definida mediante un lenguaje de marcaje, ofrecer diferentes presentaciones en función de dispositivos, servicios, contextos o aplicativos. Por lo que un mismo documento html, mediante diferentes hojas de estilo, puede ser presentado por pantalla, por impresora, por lectores de voz o por tabletas braille. Separamos el contenido de la forma, composición, colores y fuentes.
 
-La especificación del CSS la mantiene el World Wide Web Consortium (W3Cg).
+La especificación de CSS está mantenida por el World Wide Web Consortium (W3Cg).
 
 
 Las diferentes revisiones de las hojas de estilo tienen el origen en la primera especificación publicada por el W3C en diciembre de 1996 y que pretendía unificar la sintaxis y el modo de definir una hoja de estilos por los diferentes lenguajes derivados del SGML. Así, las principales características que se pueden definir mediante esta primera especificación son:
@@ -430,11 +430,7 @@ A grandes rasgos podemos destacar dos beneficios del uso de CSS3
     antes (normalmente un gráfico en formato png).
     También podemos mejorar el rendimiento al tener menos código, divs dentro
     de divs, etc.
-    \item[Incremento del rendimiento de las páginas] Menos etiquetas html indican menos código a la hora de descargarse del servidor
-    y menos código a la hora de interpretar y dibujar el navegador. Dos ahorros,
-    uno de ancho de banda y el otro de rendimiento del ordenador. Además,
-    muchas de las técnicas de CSS3 nos ahorran imágenes, que a la vez cumplen
-    la doble premisa de rendimiento.
+    \item[Incremento del rendimiento de las páginas] Menos etiquetas html indican\\ menos código a la hora de descargarse del servidor  y menos código a la hora de interpretar y dibujar el navegador. Dos ahorros, uno de ancho de banda y el otro de rendimiento del ordenador. Además, muchas de las técnicas de CSS3 nos ahorran imágenes, que a la vez cumplen la doble premisa de rendimiento.
 \end{description}
 
 
@@ -499,13 +495,13 @@ Las propiedades más importantes de JavaScript son las siguientes:
 
 La sintaxis de JavaScript es muy similar a la de otros lenguajes de programación como Java y C. Las normas básicas que definen la sintaxis de JavaScript son las siguientes:
 \begin{description}
-    \item[No se tienen en cuenta los espacios en blanco y las nuevas líneas] Como sucede con XHTML, el intérprete de JavaScript ignora cualquier espacio en blanco sobrante, por lo que el código se puede ordenar de forma adecuada para entenderlo mejor (tabulando las líneas, añadiendo espacios, creando nuevas líneas, etc...)
+    \item[No se tienen en cuenta los espacios en blanco y nuevas líneas] Como sucede con XHTML, el intérprete de JavaScript ignora cualquier espacio en blanco sobrante, por lo que el código se puede ordenar de forma adecuada para entenderlo mejor (tabulando las líneas, añadiendo espacios, creando nuevas líneas, etc...)
     
     \item[Se distinguen las mayúsculas y minúsculas] Al igual que sucede con la sintaxis de las etiquetas y elementos XHTML. Sin embargo, si en una página XHTML se utilizan indistintamente mayúsculas y minúsculas, la página se visualiza correctamente, siendo el único problema la no validación de la página. En cambio, si en JavaScript se intercambian mayúsculas y minúsculas el script no funciona.
     
     \item[No se define el tipo de las variables] Al crear una variable, no es necesario indicar el tipo de dato que almacenará. De esta forma, una misma variable puede almacenar diferentes tipos de datos durante la ejecución del script.
     
-    \item[No es necesario terminar cada sentencia con el carácter de punto y coma] En la mayoría de lenguajes de programación, es obligatorio terminar cada sentencia con el carácter ;. 
+    \item[No es necesario terminar cada sentencia con el carácter ;] En la mayoría de lenguajes de programación, es obligatorio terminar cada sentencia con el carácter ;. 
         
     \item[Se pueden incluir comentarios] Los comentarios se utilizan para añadir información en el código fuente del programa. Aunque el contenido de los comentarios no se visualiza por pantalla, si que se envía al navegador del usuario junto con el resto del script, por lo que es necesario extremar las precauciones sobre la información incluida en los comentarios.
 \end{description}
@@ -526,7 +522,7 @@ Otras ventajas son:
 \begin{description}
     \item[Uso de patrones de diseño] Uno de las principales ventajas que ofrecen los framework es el uso de patrones de diseño para el desarrollo de la aplicación. El patrón más utilizado y que casi todos los framework utilizan es el conocido como Modelo – Vista – Controlador (MVC).
     
-    \item[Estructura predefinida de la aplicación] El programador no necesita plantearse la estructura global de la aplicación, ya que esta es    proporcionada por el propio framework. Esto tiene la ventaja de que pasado un tiempo, si hay  que tocar algo en la aplicación, sabremos donde encontrar el archivo en cuestión de forma rápida.
+    \item[Estructura predefinida de la aplicación] El programador no necesita plantearse la estructura global de la aplicación, ya que esta es proporcionada por el  framework. Tiene la ventaja de que pasado un tiempo, si hay  que tocar algo en la aplicación, sabremos donde encontrar el archivo en cuestión de forma rápida.
     
     \item[Código altamente testeado] Todo el código que forma parte del framework está altamente probado, lo que garantiza el buen    funcionamiento del mismo. Se podría desarrollar esas mismas funcionalidades, pero   nunca podremos garantizar el nivel de testeo que ofrece un framework.
     
@@ -587,7 +583,7 @@ Laravel se apoya en las mejoras introducidas en las últimas versiones de PHP co
     Para indicar los espacios de nombres en los que PHP deberá buscar las clases, utilizamos la palabra “use” seguida del espacio de nombre de la clase, por ejemplo: \verb|use Illuminate\Database\Eloquent\Model|.
     \item[Interfaces (interfaces)]  También se conocen como Contratos y son una forma de definir los métodos que una clase deberá proveer, si implementa esa interfaz. Las Interfaces no contiene ningún detalle de implementación, únicamente son contratos.
     
-    \item[Funciones anónimas] Ayudan a crear código más corto y se utilizan para definir rutas, eventos, filtros y en otras partes. Ejemplo de una función anónima adjunta a una ruta: \verb|Route::get(‘hi’, function(){ return ‘hi’;});|
+    \item[Funciones anónimas] Ayudan a crear código más corto y se utilizan para definir rutas, eventos, filtros y en otras partes. Ejemplo de una función anónima en una ruta: \verb|Route::get(‘hi’, function(){ return ‘hi’;});|
     
     \item[Sobrecarga (overloading)] También llamados métodos dinámicos o mágicos, nos permiten llamar a métodos que no estaban previamente definidos en una clase. Ejemplo: \verb|whereUsernameOrEmail ($name, $email)|.  
     
@@ -618,7 +614,7 @@ Veamos qué es lo que se puede esperar de un proyecto con Laravel y como éstas 
     
     \item[Gestor de configuración] Frecuentemente la aplicación se ejecutará en diferentes entornos, esto quiere decir que tanto la base de datos como credenciales o dominios serán diferentes si se ejecutan el local en el entorno de test o en los servidores de producción. Laravel nos permite definir configuraciones separadas para cada uno de los entornos.
     
-    \item[Confeccionador de consultas y ORM (Object Relational Mapper)] Cuando se instala Laravel viene con un constructor de consultas, este nos permite lanzar consultas a la base de datos con una sintaxis PHP de métodos enlazados, en lugar de tener que escribir la SQL completa. Además proporciona un ORM y una implementación de RegistroActivo (ActiveRecord) llamado Eloquent, que permite definir modelos interconectados. Estos componentes son compatibles con bases de datos tales como PostgreSQL, SQLite, MySql, MS SQL Server.
+    \item[Confeccionador de consultas y ORM] Cuando se instala Laravel viene con un constructor de consultas, este nos permite lanzar consultas a la base de datos con una sintaxis PHP de métodos enlazados, en lugar de tener que escribir la SQL completa. Además proporciona un ORM y una implementación de RegistroActivo (ActiveRecord) llamado Eloquent, que permite definir modelos interconectados. Estos componentes son compatibles con bases de datos tales como PostgreSQL, SQLite, MySql, MS SQL Server.
     
     \item[Confeccionador esquema, migraciones y repoblaciones] Inspirado por la filosofía Rails, estas características permiten definir un esquema de base de datos dentro de PHP y mantener un registro de los cambios para así ayudar en la migración de base de datos. Las repoblaciones (Seeding) permiten poblar las tablas seleccionadas de una base de datos una vez realizada la migración para de esta forma rellenar con datos las tablas.
     

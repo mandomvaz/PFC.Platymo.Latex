@@ -2,8 +2,7 @@
  \section{Objetivos}
  El objetivo general de este proyecto es acercar la domótica, y los beneficios que ello conlleva, a hogares con menos recursos. Romper la barrera de que estos sistemas son un lujo, y pasen a ser algo cotidiano y al alcance de todos.
  
-  Conseguir este objetivo es algo muy ambicioso, aún así, para dejar nuestro granito de arena en este largo camino, 
-  intentaremos crear un sistema de bajo coste. Basado en elementos de uso común en  electrónica y en el equipamiento habitual en las viviendas actuales.  Para ello nos proponemos dos objetivos concretos.
+  Conseguir este objetivo es algo muy ambicioso, aún así, para dejar nuestro granito de arena en este largo camino, intentaremos crear un sistema de bajo coste. Basado en elementos de uso común en  electrónica y en el equipamiento habitual en las viviendas actuales.  Para ello nos proponemos dos objetivos concretos.
   
   El primer objetivo es crear un marco de trabajo y de comunicaciones entre los distintos elementos, para que estos puedan trabajar al unísono y en armonía, y sirva de base para poder implementar las funciones de un sistema domótico.
   
@@ -16,21 +15,21 @@
 \section{Escenario}
 Para el desarrollo del proyecto necesitamos partir de una base, un escenario concreto sobre el que construir el sistema. Este debe ser lo suficientemente amplio para que una vez acabado podamos extrapolar el sistema domótico al máximo de casos en la vida real.
 
-Para ello, el escenario elegido es una vivienda unifamiliar ya construida y habitada. Ya que así, abarcamos  un gran conjunto de público que podría beneficiarse de la domótica, a la vez que es facilmente adaptable a viviendas en fase de construcción.
+Para ello, el escenario elegido es una vivienda unifamiliar ya construida y habitada. Ya que así, abarcamos  un gran conjunto de público que podría beneficiarse de la domótica, a la vez que es fácilmente adaptable a viviendas en fase de construcción.
 
 
 El escenario quedaría constituido de la siguiente forma:
 \begin{description}
     \item[Lugar físico] Vivienda unifamiliar construida y habitada.
         \begin{itemize}
-            \item Cableado de la instalacion eléctrica ya existente.
+            \item Cableado de la instalación eléctrica ya existente.
             \item Mezcla heterogénea de luminarias(bombillas de bajo consumo, halógenas, fluorescentes, etc...).
             \item Red doméstica instalada.
         \end{itemize}
     \item[Funciones del sistema] Limitado a las luminarias.
         \begin{itemize}
             \item Control On/Off.
-            \item Deteccion de movimiento en zonas de paso y baños.
+            \item Detección de movimiento en zonas de paso y baños.
             \item Control de Escenas.
             \item Apagado General.
             \item Programación periódica de acciones.
@@ -38,27 +37,27 @@ El escenario quedaría constituido de la siguiente forma:
         \end{itemize}
 \end{description}
 
-Una vez situados, pasaremos a describir la implementacion del sistema.
+Una vez situados, pasaremos a describir la implementación del sistema.
 
 
 \section{Arquitectura}
-El punto central del sistema es la Raspberry Pi. Ésta actúa como estación base o gateway de la red de sensores, y a la vez, está conectada a la red doméstica para servir la aplicación de usuario. Desde aquí se envian y reciben los comandos de la red de sensores, se reciben y traducen en comandos las ordenes del usuario, y se ejecutan las tareas periódicas del sistema. 
+El punto central del sistema es la Raspberry Pi. Ésta actúa como estación base o gateway de la red de sensores, y a la vez, está conectada a la red doméstica para servir la aplicación de usuario. Desde aquí se envían y reciben los comandos de la red de sensores, se reciben y traducen en comandos las ordenes del usuario, y se ejecutan las tareas periódicas del sistema. 
 
 
-La red de sensores esta formada por placas arduino, una por cada habitación. Cada arduino esta al cargo de encender o apagar las luces de su habitacion, monitorizar la temperatura, ejecutar las ordenes recibidas desde la Raspberry y enviar a ésta la informacion pertinente del sistema.
+La red de sensores esta formada por placas Arduino, una por cada habitación. Cada Arduino esta al cargo de encender o apagar las luces de su habitación, monitorizar la temperatura, ejecutar las ordenes recibidas desde la Raspberry y enviar a ésta la información pertinente del sistema.
 
 La aplicación de usuario es una aplicación web, servida desde la Raspberry, que funciona como punto de entrada del usuario al sistema. Desde aquí es posible encender y apagar las luces, gestionar las escenas y programar acciones del sistema.
 
-Desde el punto de vista del software, el sistema se compone tres capas. Éstas, en orden ascendente en nivel de abstracción, son: la programación de los nodos, un servidor central engargado de las comunicaciones y la gestión, y la aplicacion de usuario. Las dos últimas se ejecutan dentro de la Raspberry.
+Desde el punto de vista del software, el sistema se compone tres capas. Éstas, en orden ascendente en nivel de abstracción, son: la programación de los nodos, un servidor central encargado de las comunicaciones y la gestión, y la aplicación de usuario. Las dos últimas se ejecutan dentro de la Raspberry.
 
 \section{Comunicaciones Raspberry Pi-Red de sensores}
 Para las comunicaciones entre la Raspberry y la red de sensores hemos creado un pequeño protocolo basado en mensajes, encima del protocolo XBee. 
 
-La red de sensores esta configurada en  malla para asegurar la interconexión de todos los nodos. Ya que en una vivienda, al haber numerosas paredes y obstáculos, con otras configuraciones podrían quedar zonas oscuras en la conexion a la red.
+La red de sensores esta configurada en  malla para asegurar la interconexión de todos los nodos. Ya que en una vivienda, al haber numerosas paredes y obstáculos, con otras configuraciones podrían quedar zonas oscuras en la conexión a la red.
 
-Dentro del protocolo XBee, los nodos de la red envian exclusivamente hacia la Raspberry; y ésta envía exclusivamente en broadcast. Además, los módulos estan configurados en <<modo transparente>>, esto es que todo lo que recibe por la patilla de envio, aparece en la patilla de recepción en el otro lado, de forma totalmente transparente. Con lo que a efectos de programación, solo vemos un puerto serie. 
+Dentro del protocolo XBee, los nodos de la red envían exclusivamente hacia la Raspberry; y ésta envía exclusivamente en broadcast. Además, los módulos están configurados en <<modo transparente>>, esto es que todo lo que recibe por la patilla de envío, aparece en la patilla de recepción en el otro lado, de forma totalmente transparente. Con lo que a efectos de programación, solo vemos un puerto serie. 
 
-También marcaremos los módulos XBee como routers de la red, para que esta que configurada en malla, así, aseguramos la interconexión de todos los nodos. Ya que en una vivienda, al haber numerosas paredes y obstáculos, con otras configuraciones podrían quedar zonas oscuras en la conexion a la red.
+También marcaremos los módulos XBee como routers de la red, para que esta que configurada en malla, así, aseguramos la interconexión de todos los nodos. Ya que en una vivienda, al haber numerosas paredes y obstáculos, con otras configuraciones podrían quedar zonas oscuras en la conexión a la red.
 
 
 Usar el protocolo XBee como base del nuestro nos proporciona algunas ventajas. Es inalámbrico, con lo que ahorramos en instalación de cables. Y podemos olvidarnos de los detalles como empaquetado, direccionamiento, colisiones, etc; que dejamos en manos de XBee, y centrarnos en enviar y recibir la información realmente importante para nosotros.
@@ -75,7 +74,7 @@ Así pues, definimos el formato de los mensajes de la siguiente manera:
     \centering
     \begin{tabular}{cccc}
         \toprule
-        MY & FUNCION & POSICION & VALOR \\ \toprule
+        MY & FUNCIÓN & POSICIÓN & VALOR \\ \toprule
         xx & xx      & xx       & xxx  \\ \bottomrule
     \end{tabular}
     \caption{Formato mensajes}
@@ -85,20 +84,20 @@ Así pues, definimos el formato de los mensajes de la siguiente manera:
 
 \begin{description}
     \item[MY] Es la identificación del nodo dentro de la red. Usamos la misma nomenclatura que en XBee para no sobrecargar de parámetros al usuario. Dos caracteres.
-    \item[Función] Codigo de la función a ejecutar o de la que se está reportando. Dos caracteres, tipo entero.
+    \item[Función] Código de la función a ejecutar o de la que se está reportando. Dos caracteres, tipo entero.
     \item[Posición] Este campo hace referencia al actuador o sensor al que va dirigida la función. Dos caracteres, tipo entero.
     \item[Valor] Este campo se utiliza para comunicar el valor que toma, o debe tomar el actuador o sensor en cuestión. Tres caracteres, tipo entero.
 \end{description}
 
 Para facilitar las tareas de depuración y decodificación a los usuarios finales, decidimos optar por mensajes son de longitud fija.
 
-Otra caracteristica de nuestro protocolo es que la  comunicación de datos es en base a unas funciones predefinidas en el sistema. Además, dependiendo de quien reciba el mensaje, este tiene un significado u otro.
+Otra característica de nuestro protocolo es que la  comunicación de datos es en base a unas funciones predefinidas en el sistema. Además, dependiendo de quien reciba el mensaje, este tiene un significado u otro.
 
 Por el momento, las funciones definidas en el sistema son:
 
 \begin{description}
     \item[Función <<00>>] Es el comando de una de las acciones especiales del sistema. Con este mensaje se apagan todas las luces de la vivienda.
-    \item[Función <<10>>] Se usa para establecer el valor de un actuador, si el mensaje lo envia la Raspberry; o para informar de que un actuador ha cambiado de valor (por acción de un interruptor por ejemplo) si el que envia el mensaje es arduino.
+    \item[Función <<10>>] Se usa para establecer el valor de un actuador, si el mensaje lo envía la Raspberry; o para informar de que un actuador ha cambiado de valor (por acción de un interruptor por ejemplo) si el que envía el mensaje es Arduino
     \item[Función <<20>>] la usamos tanto para pedir una temperatura, como para reportarla.
 \end{description}
 
@@ -124,7 +123,7 @@ En la tabla \ref{tab:funcSistema} podemos ver el conjunto de funciones del siste
 
 \section{Nodos - Arduino}
 \subsection{Ubicación}
-Para aprovechar los conductos del cableado eléctrico existente, hemos optado por ubicar un nodo de la red en cada habitacion de la vivienda. De esta manera, introducir los cables necesarios es mas sencillo, puesto que todo queda dentro de cada habitacion, que ya dispone de los conductos necesarios.
+Para aprovechar los conductos del cableado eléctrico existente, hemos optado por ubicar un nodo de la red en cada habitación de la vivienda. De esta manera, introducir los cables necesarios es mas sencillo, puesto que todo queda dentro de cada habitación, que ya dispone de los conductos necesarios.
 
  Además, hace al sistema mas modulable al poder incorporar las habitaciones poco a poco.
 
@@ -145,12 +144,12 @@ El sensor de presencia en conjunto con el sensor de luz se usan para el encendid
 \subsection{Cableado y conexiones}
  Para poder permitir que los nodos puedan interactuar con la vivienda es necesario introducir algunos cambios a esta.
  
- El primer cambio es convertir los interruptores que haya instalados en sensores para el nodo. Esto es tan sencillo como llevar dos cables desde el nodo al interruptor, uno conectado a tierra y el otro en cualquiera de las entradas digitales del arduino. En la figura \ref{fig:conexion-ard-int} se puede ver el esquema de la conexión.
+ El primer cambio es convertir los interruptores que haya instalados en sensores para el nodo. Esto es tan sencillo como llevar dos cables desde el nodo al interruptor, uno conectado a tierra y el otro en cualquiera de las entradas digitales del Arduino. En la figura \ref{fig:conexion-ard-int} se puede ver el esquema de la conexión.
  
  \begin{figure}[htb]
      \centering
      \includegraphics[width=0.8\textwidth]{imagenes/arduino_interruptor.png}
-     \caption{Ejemplo de conexion Arduino y un interruptor}
+     \caption{Ejemplo de conexión Arduino y un interruptor}
      \label{fig:conexion-ard-int}
     \end{figure}
  
@@ -168,12 +167,12 @@ El sensor de presencia en conjunto con el sensor de luz se usan para el encendid
  
  Hemos elegido como optoacoplador el MOC3041 porque incorpora <<detección de paso por cero>>. El optoacoplador espera a que la señal de  alterna pase por cero para abrir o cerrar el paso de corriente. Gracias a este comportamiento se reduce el estrés en los aparatos, ya que la señal eléctrica les llega gradualmente, y se consigue una vida útil mas larga.
   
-En la figura \ref{fig:ard_int_lamp} se muestra esquema de conexión entre un noodo, el relé y una lampara.
+En la figura \ref{fig:ard_int_lamp} se muestra esquema de conexión entre un nodo, el relé y una lampara.
 
 \begin{figure}[htb]
     \centering
     \includegraphics[width=0.8\textwidth]{imagenes/arduino_lampara.png}
-    \caption{Ejemplo de conexion: Arduino, interruptor, relé y lámpara}
+    \caption{Ejemplo de conexión: Arduino, interruptor, relé y lámpara}
     \label{fig:ard_int_lamp}
 \end{figure}
 
@@ -181,9 +180,9 @@ Cada Arduino dispone de 14 pines de entrada/salida digitales, estos son los que 
 
 \subsection{Funcionamiento}
 
-El código que se ejecuta en cada arduino consta de tres partes: <<configuración>>, <<setup>>, <<loop>>.
-\subsubsection{Configuracion}
-En esta parte del codigo es donde se configuran todos los parámetros que necesita arduino para funcionar.
+El código que se ejecuta en cada Arduino consta de tres partes: <<configuración>>, <<setup>>, <<loop>>.
+\subsubsection{Configuración}
+En esta parte del código es donde se configuran todos los parámetros que necesita Arduino para funcionar.
 
 Lo primero es definir la identificación del nodo.
 \begin{lstlisting}
@@ -192,7 +191,7 @@ const char MY[] = "01";
 
 \end{lstlisting}
 
-Después, tenemos que especificar en que patillas están conectados los interruptores, los actuadores, y la relacion de ambos.
+Después, tenemos que especificar en que patillas están conectados los interruptores, los actuadores, y la relación de ambos.
 
 \begin{lstlisting}
 
@@ -208,7 +207,7 @@ int PIN_ACTUADORES[NUM_ACT] = {11, 13};
 
 \end{lstlisting}
 
-En el array <<INTERRUPTOR\_ACTUADOR>> es donde se relacionan los interruptores con los actuadores. La posicion dentro del array hace referencia al interruptor, y el valor de dicha posicion referencia al actuador corrrespondiente. En el ejemplo mostrado, el primer interruptor esta conectado al pin 7 de arduino, y el actuador que debe accionarse es el de la posicion 0, es decir, el actuador en el pin 11.
+En el array <<INTERRUPTOR\_ACTUADOR>> es donde se relacionan los interruptores con los actuadores. La posición dentro del array hace referencia al interruptor, y el valor de dicha posición referencia al actuador correspondiente En el ejemplo mostrado, el primer interruptor esta conectado al pin 7 de Arduino, y el actuador que debe accionarse es el de la posición 0, es decir, el actuador en el pin 11.
 
 Acto seguido se configuran los pines de los sensores, temperatura, movimiento y luz. Ademas de la posición (dentro del vector <<PIN\_ACTUADORES>>) del actuador del sensor de movimiento, y el tiempo que éste debe estar encendido en milisegundos. 
 
@@ -226,7 +225,7 @@ int TIEMPO_PIR = 3000;
 int PIN_LDR = 2;
 \end{lstlisting}
 
-El resto del codigo hasta la siguiente sección, son variables globales necesarias para el correcto desarrollo de arduino. Aqui no es necesaria la configuración.
+El resto del código hasta la siguiente sección, son variables globales necesarias para el correcto desarrollo de Arduino. Aquí no es necesaria la configuración.
 
 \begin{lstlisting}
 
@@ -269,34 +268,35 @@ Las variables: <<FUNCION\_MSJ>>, <<ACTUADOR\_MSJ>>, <<VALOR\_MSJ>>, se usan en l
 
 Las <<flags>> se utilizan para comunicar eventos dentro del programa.
 
-Por último tenemos los <<timers>> o temporizadores, éstos se utilizan para evitar el uso de sentencias como \lstinline[]|delay()|. En ellos se almacena el tiempo que arduino lleva encendido, funcion \lstinline|millis()|, y en sucesivas vueltas del <<loop>> se comprueba el tiempo que ha pasado.
+Por último tenemos los <<timers>> o temporizadores, éstos se utilizan para evitar el uso de sentencias como \lstinline[]|delay()|. En ellos se almacena el tiempo que Arduino lleva encendido, función \lstinline|millis()|, y en sucesivas vueltas del <<loop>> se comprueba el tiempo que ha pasado.
 
 
 \subsubsection{Setup}
-Esta parte del código solo se ejecuta una vez, justo al encenderse el arduino.
+Esta parte del código solo se ejecuta una vez, justo al encenderse el Arduino.
 
-Aqui usamos la información introducida en la <<configuración>> para ajustar los parámetros internos del microcontrolador e inicializar las comunicaciones. El código es el siguiente:
+Aquí usamos la información introducida en la <<configuración>> para ajustar los parámetros internos del microcontrolador e inicializar las comunicaciones. El código es el siguiente:
 
 \begin{lstlisting}
 void setup() {
-Serial.begin(9600);
-int i;
-
-//Interruptores, inicializacion
-for(i = 0; i < NUM_INT; i++){
-pinMode (PIN_INTERRUPTORES[i], INPUT_PULLUP);
-ESTADO_INTERRUPTORES[i] = digitalRead (PIN_INTERRUPTORES[i]);
-TIMER_INTERRUPTOR[i] = 0;
-}
-
-//Actuadores, inicializacion
-for(i = 0; i < NUM_ACT; i++){
-pinMode(PIN_ACTUADORES[i], OUTPUT);
-VALOR_ACTUADORES[i] == 0;
-}
-
-//Sensores
-pinMode(PIN_PIR, INPUT);
+    Serial.begin(9600);
+    int i;
+    
+    //Interruptores, inicializacion
+    for(i = 0; i < NUM_INT; i++){
+        pinMode (PIN_INTERRUPTORES[i], INPUT_PULLUP);
+        ESTADO_INTERRUPTORES[i] = 
+           digitalRead (PIN_INTERRUPTORES[i]);
+    TIMER_INTERRUPTOR[i] = 0;
+    }
+    
+    //Actuadores, inicializacion
+    for(i = 0; i < NUM_ACT; i++){
+        pinMode(PIN_ACTUADORES[i], OUTPUT);
+        VALOR_ACTUADORES[i] == 0;
+    }
+    
+    //Sensores
+    pinMode(PIN_PIR, INPUT);
 }
 \end{lstlisting}
 
@@ -304,12 +304,12 @@ Empieza por configurar el puerto serie a 9600 baudios.
 
 Luego, se configuran los pines correspondientes a los interruptores como entradas, y se activan las resistencias <<pull-up>> internas del microcontrolador. La razón de usar las resistencias internas es eliminar circuitería extra de cara al usuario.
 
-Tambien se configuran los pines de los actuadores como salidas digitales, y los pines de los sensores como entradas.
+También se configuran los pines de los actuadores como salidas digitales, y los pines de los sensores como entradas.
 
 A la vez que se configuran los pines, se inicializan los valores de los vectores <<ESTADO\_INTERRUPTORES>> Y <<VALOR\_ACTUADORES>>.
 
 \subsubsection{Loop}
-Como ya sabemos el <<loop>> es un bucle que se ejecuta sin parar y hasta el infinito dentro de arduino. Aquí es donde reside toda la lógica del nodo.
+Como ya sabemos el <<loop>> es un bucle que se ejecuta sin parar y hasta el infinito dentro de Arduino. Aquí es donde reside toda la lógica del nodo.
 
 Lo hemos dividido en varias secciones, que se ejecutan en orden.
 
@@ -335,7 +335,7 @@ if(Serial.available() > 0){
 Acto seguido, se procesa el mensaje, ejecutando la orden recibida.
 
 \subsubsection{Sensores e interruptores}
-Esta seccion se subdivide en otras dos partes: control de interruptores y lectura de sensores.
+Esta sección se subdivide en otras dos partes: control de interruptores y lectura de sensores.
 
 Veamos primero el control de los interruptores. El código:
 \begin{lstlisting}
@@ -361,15 +361,16 @@ for(i = 0; i < NUM_INT; i++){
 
 Como vimos anteriormente, en el escenario sobre el que trabajamos lo que tenemos son interruptores convencionales. Por ello, para controlarlos, buscamos cambios en el estado; es decir, saltos tanto de 0 a 5V como de 5 a 0V. 
 
-Teniendo lo anterior en cuenta, el proceso es el siguiente: se recorre el array de interruptores, <<PIN\_INTERRUPTORES>>, comprobando el estado que tenemos guardado con el actual. En caso de encontrar algún cambio, guadamos el nuevo estado, activamos el timer correspondiente y llamamos a la función \lstinline|cambiaActuador()|. Esta función lo único que hace es guardar en el array <<VALOR\_ACTUADORES>> el nuevo valor, para su posterior actualización y notifica a la Raspberry el nuevo valor del actuador.
+Teniendo lo anterior en cuenta, el proceso es el siguiente: se recorre el array de interruptores, <<PIN\_INTERRUPTORES>>, comprobando el estado que tenemos guardado con el actual. En caso de encontrar algún cambio, guardamos el nuevo estado, activamos el timer correspondiente y llamamos a la función \lstinline|cambiaActuador()|. Esta función lo único que hace es guardar en el array <<VALOR\_ACTUADORES>> el nuevo valor, para su posterior actualización y notifica a la Raspberry el nuevo valor del actuador.
 
 
 Si se ha detectado un cambio, pero el timer aun sigue activo, solo guardamos el nuevo estado para las siguientes comprobaciones. Al cabo de 1000 milisegundos, desactivamos el timer y vuelve a empezar el ciclo.
 
-Lo siguiente en el <<loop>> es leer el valor de los sensores. Esto lo hacemos leyendo el sensor y guandando los valores sobre un array de 10 posiciones de forma cíclica. Luego, cuando se solicite el valor de alguno de los sensores, se realiza una media aritmética de los valores del array, así, se obtienen lecturas más estables.
+Lo siguiente en el <<loop>> es leer el valor de los sensores. Esto lo hacemos leyendo el sensor y guardando los valores sobre un array de 10 posiciones de forma cíclica. Luego, cuando se solicite el valor de alguno de los sensores, se realiza una media aritmética de los valores del array, así, se obtienen lecturas más estables.
 
 \begin{lstlisting}
-ARRAY_TEMPERATURA[bucle_sensor] = analogRead(PIN_TEMPERATURA);
+ARRAY_TEMPERATURA[bucle_sensor] = 
+         analogRead(PIN_TEMPERATURA);
 //Luz
 array_luz[bucle_sensor] = analogRead(PIN_LDR);
 
@@ -409,7 +410,8 @@ if(FLAG_PIR == 0 && digitalRead(PIN_PIR) == HIGH){
 }
 
 
-if( TIMER_PIR != 0 && (millis() - TIMER_PIR > TIEMPO_PIR)){
+if( TIMER_PIR != 0 
+   && (millis() - TIMER_PIR > TIEMPO_PIR)){
         TIMER_PIR = 0;
         VALOR_ACTUADORES[ACTUADOR_PIR] = 0;
 }
@@ -434,10 +436,10 @@ for(i = 0; i < NUM_ACT; i++){
 
 \end{lstlisting}
 
-Antes de terminar, hay que destacar una característica de los nodos: el funcionamiento tanto de los interruptores físicos, como del sensor de movimiento, están programados completamente dentro de arduino. Esto quiere decir que cada uno de los nodos es completamente autónomo en el funcionamiento más básico. Aunque, por ejemplo, el router o la Raspberry no estén operativos, o se caiga la red XBee; el funcionamiento físico nunca se perderá.
+Antes de terminar, hay que destacar una característica de los nodos: el funcionamiento tanto de los interruptores físicos, como del sensor de movimiento, están programados completamente dentro de Arduino. Esto quiere decir que cada uno de los nodos es completamente autónomo en el funcionamiento más básico. Aunque, por ejemplo, el router o la Raspberry no estén operativos, o se caiga la red XBee; el funcionamiento físico nunca se perderá.
 
 \section{Estación base - Raspberry Pi}
-La estación base, o la Raspberry Pi en nuestro sistema, es la encargada de gestionar todo el sistema. Desde aqui se gestionan las conexiones y se ejecutan las tareas de alto nivel.
+La estación base, o la Raspberry Pi en nuestro sistema, es la encargada de gestionar todo el sistema. Desde aquí se gestionan las conexiones y se ejecutan las tareas de alto nivel.
 
 \subsection{Ubicación}
 A priori, lo ideal sería ubicar la Raspberry cerca del router doméstico, pues se supone que será un punto cercano al centro de la vivienda, y ademas se podría conectarla a el directamente con un cable Ethernet. Aunque esto no pueda ser así, tampoco es un problema ya que la conexión con la red de sensores es inalámbrica, y existe la posibilidad de añadir un dongle Wi-Fi para la conexión a la red doméstica.
@@ -465,7 +467,7 @@ El funcionamiento lógico de la Raspberry está dividido en tres bloques.
 Una base de datos, que nos proporciona una estructura en la que almacenar la información necesaria para la gestión del sistema. 
 
 
-Un servidor central, donde se procesan las peticiones de la aplicacion de usuario y los mensajes de la red, se envían las órdenes pertinentes y se actualiza la información de la base de datos.
+Un servidor central, donde se procesan las peticiones de la aplicación de usuario y los mensajes de la red, se envían las órdenes pertinentes y se actualiza la información de la base de datos.
 
 Por último, la aplicación de usuario, en ésta se proporciona una interfaz gráfica para el manejo del sistema. Desde ella se activan y desactivan las luces y las escenas, se programan las acciones, etc... Además, sirve para configurar el sistema a través de la base de datos.
 
@@ -519,7 +521,7 @@ Estas entidades, y sus relaciones, se traducen en el siguiente conjunto de tabla
  
  El funcionamiento a grandes rasgos es el siguiente. 
  
- El hilo <<interfaz wsn>> esta constantemente esperando a recibir o un mensaje de la red, que lo pasa al hilo de gestión; o a recibir un mensaje para enviar a la red, que inmediatamente despues de recibirlo lo envía a través del puerto serie.
+ El hilo <<interfaz wsn>> esta constantemente esperando a recibir o un mensaje de la red, que lo pasa al hilo de gestión; o a recibir un mensaje para enviar a la red, que inmediatamente después de recibirlo lo envía a través del puerto serie.
  
  El hilo <<interfaz app>> está esperando una conexión desde la aplicación de usuario, cuando la recibe, extrae la petición y se la envía al hilo de gestión.
  
@@ -532,20 +534,23 @@ Estas entidades, y sus relaciones, se traducen en el siguiente conjunto de tabla
      a_enviar =  queue.Queue()
      peticiones = queue.Queue()
  
-     hilopcm = pcm.Pcm(recibidos, a_enviar, peticiones)
+     hilopcm =
+        pcm.Pcm(recibidos, a_enviar, peticiones)
      hilopcm.start()
  
-     hilowsn = interfazwsn.InterfazWsn(recibidos, a_enviar)
+     hilowsn = 
+       interfazwsn.InterfazWsn(recibidos, a_enviar)
      hilowsn.start()
  
-     hiloapp = interfazapp.InterfazApp(a_enviar, peticiones)
+     hiloapp = 
+       interfazapp.InterfazApp(a_enviar, peticiones)
      hiloapp.start()
  \end{lstlisting}
  
  En este script se crean los tres objetos <<Queue>> que necesitamos.
  \begin{description}
      \item[recibidos] En esta cola se almacenan los mensajes recibidos desde la red de sensores.
-     \item[a\_enviar] Aqui se almacenan los mensajes salientes hacia la red.
+     \item[a\_enviar] Aquí se almacenan los mensajes salientes hacia la red.
      \item[peticiones] En esta cola guardamos las peticiones que van llegando desde la aplicación de usuario.
     \end{description}
  
@@ -555,7 +560,7 @@ Estas entidades, y sus relaciones, se traducen en el siguiente conjunto de tabla
  
  Este script se encarga de envolver las comunicaciones con la red de sensores. Para ello, se inicializa el puerto serie, y se monitoriza constantemente tanto el puerto serie, como la cola de envíos. 
  
- El scritp es el siguiente:
+ El script es el siguiente:
   \begin{lstlisting}
   class InterfazWsn(threading.Thread):
       def __init__(self, rec, env):
@@ -582,14 +587,14 @@ Estas entidades, y sus relaciones, se traducen en el siguiente conjunto de tabla
  
  Cuando recibe un mensaje desde la red, este está en formato <<byte>>, binario, así que lo decodifica en <<ascii>>(función \lstinline|msj_b.decode('ascii')|), y lo envía al hilo de gestión, \lstinline|recibidos.put(msj)|.
  
-  Al recibir un mensaje a enviar, hace el proceso inverso. Lo convierte en formato <<byte>>, función \lstinline|msj.encode()|, lo transmite por el puerto serie, \lstinline|wsn.write(msj_b)|.
+  Al recibir un mensaje a enviar, hace el proceso inverso. Lo convierte en formato <<byte>>, función \lstinline|msj.encode()|, lo envía por el puerto serie, \lstinline|wsn.write(msj_b)|.
   
   
  \subsubsection{Hilo interfaz aplicación de usuario}
  
  Para este hilo hemos creado un pequeño servidor <<TCP>>. Este servidor, también basado en hilos, escucha por el puerto <<TCP 9999>> a la espera de comunicaciones de la aplicación de usuario. Cuando una de éstas llega, crea un hilo nuevo para esa conexión y vuelve a la espera.
  
- En el hilo nuevo, la aplicación comunica su petición a traves de un objeto <<JSON>>. Si éste es correcto, se pasa inmediatamente al hilo de gestión y se envía un <<ok>> de vuelta a la aplicación. En caso de no ser un <<JSON>> correcto, se obvia la petición y se manda hacia atrás un <<fail>>.
+ En el hilo nuevo, la aplicación comunica su petición a través de un objeto <<JSON>>. Si éste es correcto, se pasa inmediatamente al hilo de gestión y se envía un <<ok>> de vuelta a la aplicación. En caso de no ser un <<JSON>> correcto, se obvia la petición y se manda hacia atrás un <<fail>>.
  
  El script es el siguiente:
  \begin{lstlisting}
@@ -600,14 +605,17 @@ Estas entidades, y sus relaciones, se traducen en el siguiente conjunto de tabla
          self.a_enviar = envio
  
      def run(self):
-         servidor = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-         servidor.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+         servidor = socket.socket(socket.AF_INET,
+                  socket.SOCK_STREAM)
+         servidor.setsockopt(socket.SOL_SOCKET, 
+                 socket.SO_REUSEADDR, 1)
          servidor.bind(('localhost', 9999))
          servidor.listen(5)
          i = 0
          while True:
              conn, (host, puerto) = servidor.accept()
-             handler = AppHandler(conn, host, puerto, self.a_enviar, self.peticiones)
+             handler = AppHandler(conn, host, puerto, 
+                     self.a_enviar, self.peticiones)
              handler.start()
          servidor.close()
  \end{lstlisting}
@@ -617,7 +625,7 @@ Estas entidades, y sus relaciones, se traducen en el siguiente conjunto de tabla
  La clase que maneja la información que transmite la aplicación es la siguiente:
  \begin{lstlisting}
  class AppHandler(threading.Thread):
-     def __init__(self, con, host, puerto, envia, pet):
+     def __init__(self,con, host, puerto, envia, pet):
          threading.Thread.__init__(self)
          self.conexion = con
          self.peticiones = pet
@@ -645,16 +653,16 @@ Estas entidades, y sus relaciones, se traducen en el siguiente conjunto de tabla
          self.conexion.close()
  \end{lstlisting}
  
-Una vez creado el objeto, recibe los datos, los descodifica (\lstinline|deco=json.loads(data)|) en  <<JSON>>, y se comprueba que exista el campo <<peticion>>. Si esto es así, encola la petición, \lstinline|peticiones.put(deco)|, crea el <<ok>> de respuesta y lo envía, y cierra la conexión. Si el <<JSON>> no contuviera el campo <<peticion>>, significa que no es una petición válida, por lo que creará una respuesta <<fail>> y la enviará. 
+Una vez creado el objeto, recibe los datos, los descodifica en  <<JSON>>, y se comprueba que exista el campo <<peticion>>. Si esto es así, encola la petición, \lstinline|peticiones.put(deco)|, crea el <<ok>> de respuesta y lo envía, y cierra la conexión. Si el <<JSON>> no contuviera el campo <<peticion>>, significa que no es una petición válida, por lo que creará una respuesta <<fail>> y la enviará. 
 
-El motivo de realizar las comunicaciones entre el servidor en Python y la aplicación de usuario a través de conexiones <<TCP>> es flexibilizar el sistema. De esta manera, se puede descentralizar la aplicación y ésta podría estar ejecutandose en otra máquina. O por ejemplo, crear una aplicación específica para un sistema operativo, y que ésta siga teniendo acceso al sistema. Además, los objetos <<JSON>> son casi un estándar de facto en las comunicaciones entre aplicaciones, con lo que, crear estas aplicaciones alternativas no deberiía ser un problema.
+El motivo de realizar las comunicaciones entre el servidor en Python y la aplicación de usuario a través de conexiones <<TCP>> es flexibilizar el sistema. De esta manera, se puede descentralizar la aplicación y ésta podría estar ejecutandose en otra máquina. O por ejemplo, crear una aplicación específica para un sistema operativo, y que ésta siga teniendo acceso al sistema. Además, los objetos <<JSON>> son casi un estándar de facto en las comunicaciones entre aplicaciones, con lo que, crear estas aplicaciones alternativas no debería ser un problema.
 
 
 \subsubsection{Hilo de gestión}
 
 En este hilo es donde reside la mayor parte de la lógica del servidor. El script está dividido estructuralmente en tres partes: tratamiento de mensajes de la red, tratamiento de peticiones de la aplicación y acciones periódicas.
 
-El scrip se inicia con el constructor de la clase. En éste se crean las variable para albergar las colas de comunicación, se abre la conexión con la base de datos, y por último se crea el array que contendrá los objetos <<Timer>>.
+El script se inicia con el constructor de la clase. En éste se crean las variable para albergar las colas de comunicación, se abre la conexión con la base de datos, y por último se crea el array que contendrá los objetos <<Timer>>.
 
 \begin{lstlisting}
 class Pcm(threading.Thread):
@@ -708,7 +716,8 @@ if self.peticiones.qsize() > 0:
     self.peticiones.task_done()
 
     if peticion['peticion'] == "actuador":
-        self.setActuador(peticion['id'], peticion['valor'])
+        self.setActuador(peticion['id'],
+                     peticion['valor'])
     elif peticion['peticion'] == "escena":
         self.activarEscena(peticion['escena'])
     elif peticion['peticion'] == "apagarTodo":
@@ -719,7 +728,7 @@ if self.peticiones.qsize() > 0:
  
  \begin{description}
      \item[ setActuador(peticion('id'), peticion('valor')) ] Envía a la red el mensaje correspondiente para activar o desactivar el actuador.
-     \item[activarEscena(peticion('escena'))] Esta función accede a la configuración de la escena, guadada en la base de datos, y envía los mensajes correspondientes.
+     \item[activarEscena(peticion('escena'))] Esta función accede a la configuración de la escena, guardada en la base de datos, y envía los mensajes correspondientes.
      \item[apagarTodo()] Envía el mensaje <<000000000>>, que activa el apagado de todos los actuadores en todos los nodos.
      \item[setTimers()] Esta función busca en la base de datos todas las acciones programadas para el día actual, y posteriores a la hora actual. Con esta información crea los objetos <<Timer>> necesarios.  A esta función se la llama cada vez que una <<acción programada>> es creada o modificada en la aplicación.
     \end{description}
@@ -809,11 +818,11 @@ if self.peticiones.qsize() > 0:
     }
     \end{lstlisting}
     
-    Primero se establece que tabla de la base de datos contiene al modelo. El ORM de Laravel automáticamente hace accesible todos los campos que contenga la tabla, solo hay que decirle las relaciones que existen con los demas modelos. Para esto, se crean las funciones que siguen.
+    Primero se establece que tabla de la base de datos contiene al modelo. El ORM de Laravel automáticamente hace accesible todos los campos que contenga la tabla, solo hay que decirle las relaciones que existen con los demás modelos. Para esto, se crean las funciones que siguen.
     
     En este caso, como todas las relaciones del nodo son <<uno a varios>>, se utiliza la función \lstinline|hasMany('Modelo')|. Esta función es la que establece la relación <<uno a varios>> dentro del ORM.
     
-    Para establecer la relación inversa, en el modelo del actuador, por ejemplo, se debe crear otro método, pero esta vez la función a utilizar es \lstinline|belongsTo('Modelo')|. El codigo sería:
+    Para establecer la relación inversa, en el modelo del actuador, por ejemplo, se debe crear otro método, esta vez hay que utilizar \lstinline|belongsTo('Modelo')|. El código sería:
     \begin{lstlisting}
     class Actuador extends Model {
     
@@ -841,11 +850,11 @@ if self.peticiones.qsize() > 0:
     
     Esta zona es el punto de entrada del usuario. 
     
-    La primera pantalla, <<panel principal>>, da acceso a todas las demas partes de la aplicación. Su aspecto se puede ver en la figura \ref{fig:panel_ppal}
+    La primera pantalla, <<panel principal>>, da acceso a todas las demás partes de la aplicación. Su aspecto se puede ver en la figura \ref{fig:panel_ppal}
     
     \begin{figure}[htbp]
         \centering
-        \includegraphics[width=0.95\textwidth]{imagenes/panel_ppal.png}
+        \includegraphics[width=0.95\textwidth]{imagenes/panel_ppal.jpg}
         \caption{Panel principal}
         \label{fig:panel_ppal}
     \end{figure}
@@ -863,10 +872,11 @@ if self.peticiones.qsize() > 0:
     Las rutas que definen esta parte son:
     \begin{lstlisting}
     Route::get('/', 'PrincipalController@home');
-    Route::get('vista/{id}', 'PrincipalController@vista');
+    Route::get('vista/{id}', 
+                'PrincipalController@vista');
     \end{lstlisting}
     
-    Como podemos observar, la ruta <</>> activa el método \lstinline|home()| que nos renderiza la pantalla que acabamos de ver. Su codigo:
+    Como podemos observar, la ruta <</>> activa el método \lstinline|home()| que nos renderiza la pantalla que acabamos de ver. Su código:
     \begin{lstlisting}
     public function home(){
     
@@ -875,15 +885,16 @@ if self.peticiones.qsize() > 0:
         $i = 0;
         
         foreach ($habitaciones as $habitacion) {
-            $array_panel[$i] = array();
-            $array_panel[$i]['habitacion'] = $habitacion;
-            $array_panel[$i]['actuadores'] = array();
-            $j = 0;
-            foreach ($habitacion->actuadores()
-                    ->where('principal', 1)->get() as $act) {
+          $array_panel[$i] = array();
+          $array_panel[$i]['habitacion']=$habitacion;
+          $array_panel[$i]['actuadores'] = array();
+          $j = 0;
+          foreach ($habitacion->actuadores()
+                    ->where('principal', 1)->get()
+                             as $act) {
                     
-                $array_panel[$i]['actuadores'][$j] = $act;
-                $j++;
+            $array_panel[$i]['actuadores'][$j] = $act;
+            $j++;
         }
             $i++;
         }
@@ -894,20 +905,20 @@ if self.peticiones.qsize() > 0:
         
         
         return view('home.principal')->
-                    with(array('panel' => $array_panel,
+                   with(array('panel' => $array_panel,
                               'escenas' => $escenas,
                               'acciones' => $acciones,
                               'title' => ''));
     }
     \end{lstlisting}
     
-    En el código, primero se prepara toda la información necesaria, y después, retorna la vista correspondiente añadiendole la información recavada.
+    En el código, primero se prepara toda la información necesaria, y después, retorna la vista correspondiente añadiéndole la información recavada.
     
-    De forma análoga a la anterior, la función \lstinline|vista($id)|, muestra la pantalla <<vista detallada>>, figura \ref{fig:vista_hab}; cuando se accede a la ruta <</vista/{id}>>, siendo \{id\} una variable que contiene el id de la habitacion o nodo. Hay que destacar, que esta variable es extraida de la URL.
+    De forma análoga a la anterior, la función \lstinline|vista($id)|, muestra la pantalla <<vista detallada>>, figura \ref{fig:vista_hab}; cuando se accede a la ruta <</vista/{id}>>, siendo \{id\} una variable que contiene el id de la habitación o nodo. Hay que destacar, que esta variable es extraída de la URL.
     
      \begin{figure}[htbp]
          \centering
-         \includegraphics[width=0.95\textwidth]{imagenes/vista.png}
+         \includegraphics[width=0.95\textwidth]{imagenes/vista.jpg}
          \caption{Vista detallada de las habitaciones}
          \label{fig:vista_hab}
         \end{figure}
@@ -920,13 +931,15 @@ if self.peticiones.qsize() > 0:
     Las rutas definidas para <<ComandoController>> son:
     \begin{lstlisting}
     Route::get('comando/actuador/{id}/{valor}',
-                         'ComandoController@actuador');
+                        'ComandoController@actuador');
+                 
+                 
                  
     Route::get('comando/escena/{id}',
                          'ComandoController@escena');
                  
     Route::get('comando/apagar', 
-                        'ComandoController@apagarTodo');
+                      'ComandoController@apagarTodo');
     \end{lstlisting}
     
     Tomemos como ejemplo <</comando/actuador/\{4\}/\{0\}>>, en esta ruta pondríamos el actuador con id igual a 4, a valor 0, es decir, apagar el actuador 4. Para ello, la función \lstinline|actuador($id, $valor)| de <<ComandoController>> hace lo siguiente.
@@ -966,7 +979,7 @@ if self.peticiones.qsize() > 0:
     
     Una vez montado el array, se llama a la función \lstinline|envia($datos)| de la librería <<PythonComm>>. Esta librería, se encarga de enviar datos hacia el servidor Python. Una vez enviados los datos, se redirecciona al usuario hacia la pantalla desde la que activara el botón, \lstinline|redirect()->back()|.
     
-    En la función \lstinline|envia($datos)|, simplemente se abre un socket, el array <<\$datos>> se codifica en <<JSON>>, se envian por el socket, y se cierra la conexión. 
+    En la función \lstinline|envia($datos)|, simplemente se abre un socket, el array <<\$datos>> se codifica en <<JSON>>, se envían por el socket, y se cierra la conexión. 
     
     El resto de las funciones de <<ComandoController>> funcionan de la misma forma, solo que cambiando los datos de la petición.
     
@@ -977,7 +990,7 @@ if self.peticiones.qsize() > 0:
     
      \begin{figure}[htbp]
          \centering
-         \includegraphics[width=0.95\textwidth]{imagenes/panel_config.png}
+         \includegraphics[width=0.95\textwidth]{imagenes/panel_config.jpg}
          \caption{Panel de configuración}
          \label{fig:panel_config}
         \end{figure}
@@ -988,13 +1001,13 @@ if self.peticiones.qsize() > 0:
     
     Cada escena y cada acción tienen dos botones a su derecha, borrado y edición. El botón <<+>> creará una escena o acción nueva según el que pulsemos.
     
-    El formulario para añadir o editar una habitación, es el que se muestra en la figura \ref{fig:form_hab}. En él introduciremos tanto la información de la habitación, <<my>> del nodo, y el nombre de ésta, como los actuadores correspondientes, su nombre, la posición dentro del array <<PIN\_ACTUADORES>>en el código del arduino, y si queremos que se muestre en el panel principal o no.
+    El formulario para añadir o editar una habitación, es el que se muestra en la figura \ref{fig:form_hab}. En él introduciremos tanto la información de la habitación, <<my>> del nodo, y el nombre de ésta, como los actuadores correspondientes, su nombre, la posición dentro del array <<PIN\_ACTUADORES>>en el código del Arduino, y si queremos que se muestre en el panel principal o no.
     
     
     
         \begin{figure}[h!]
             \centering
-            \includegraphics[width=0.95\textwidth]{imagenes/conf_hab.png}
+            \includegraphics[width=0.95\textwidth]{imagenes/conf_hab.jpg}
             \caption{Formulario habitación}
             \label{fig:form_hab}
         \end{figure}
@@ -1008,16 +1021,16 @@ if self.peticiones.qsize() > 0:
     
     \begin{figure}[h!]
         \centering
-        \includegraphics[width=0.95\textwidth]{imagenes/conf_esc.png}
+        \includegraphics[width=0.95\textwidth]{imagenes/conf_esc.jpg}
         \caption{Formulario escena}
         \label{fig:form_esc}
     \end{figure}
     
-    Por último, en el formulario para las acciones programadas veremos campos para: el nombre de la acción, el actuador que se programa, los dias de la semana que queramos q se active, la hora, y si queremos que se encienda o apague.
+    Por último, en el formulario para las acciones programadas veremos campos para: el nombre de la acción, el actuador que se programa, los días de la semana que queramos q se active, la hora, y si queremos que se encienda o apague.
     
     \begin{figure}[h!]
         \centering
-        \includegraphics[width=0.95\textwidth]{imagenes/conf_accion.png}
+        \includegraphics[width=0.95\textwidth]{imagenes/conf_accion.jpg}
         \caption{Formulario acción programada}
         \label{fig:form_acc}
     \end{figure}
@@ -1083,10 +1096,12 @@ public function store(EscStoreFormRequest $request){
     
     $nodo->escenas()->save($escena);
     
-    foreach ($nodo->actuadores()->get() as $actuador) {
+    foreach ($nodo->actuadores()->get() 
+                            as $actuador) {
         $estado = $request->get($actuador->id);
         $escena->actuadores()->
-                attach($actuador->id, ['estado' => $estado]);
+                attach($actuador->id, 
+                      ['estado' => $estado]);
     }
   
     Session::flash('msg', 'Escena creada');
@@ -1112,20 +1127,21 @@ class EscStoreFormRequest extends Request {
     public function messages(){
     
         return [
-        'required' => 'El campo :attribute es obligatorio.',
+        'required' => 'El campo :attribute 
+                    es obligatorio.',
         
         'string'=>'Solo se permiten caracteres 
-                alfanumericos en el campo :attribute.',
+              alfanumericos en el campo :attribute.',
                 
-        'max:50'=>'El campo :attribure puede tener como
-                 maximo 50 caracteres.'
+        'max:50'=>'El campo :attribute puede tener 
+                como maximo 50 caracteres.'
         ];
     }
 
 }
     \end{lstlisting}
    
-   Con la función \lstinline|rules()| se especifican las reglas de validación, y con \lstinline|messages()| se personalizan los mensajes de error. Lo último, es necesario, puesto que, Laravel por defecto todos los mensajes están escritos para angloparlantes.
+   Con la función \lstinline|rules()| se especifican las reglas de validación, y en \lstinline|messages()| se personalizan los mensajes de error.
    
    Si pasa la validación, entra en el método \lstinline|store()|. Creamos una escena nueva, se rellena y se guarda en  la base de datos.
    
@@ -1138,7 +1154,8 @@ public function edit($id){
 
    $escena = Escena::find($id);
    
-   $habitacion = Nodo::find($escena->nodo()->first()->id);
+   $habitacion = Nodo::find($escena->nodo()->
+               first()->id);
    $actuadores = $habitacion->actuadores()->get();
    
    $query = DB::table('actuador_escena')
@@ -1154,7 +1171,7 @@ public function edit($id){
        foreach ($query as $row) {
    
            if($actuador->id == $row->actuador_id){
-               $act_estado[$i]['estado'] = $row->estado;
+            $act_estado[$i]['estado'] = $row->estado;
            }
        }
        $i++;
@@ -1184,7 +1201,7 @@ public function update(EscStoreFormRequest $request){
                 ->actuadores()->get() as $actuador) {
                 
         $data_sync[$actuador->id] = 
-                ['estado' => $request->get($actuador->id)];
+          ['estado' => $request->get($actuador->id)];
     }
     
     $escena->actuadores()->sync($data_sync);
@@ -1200,7 +1217,7 @@ En el método update hay que resaltar el uso de la función \lstinline|sync()|. 
 En nuestro caso, recibe un array con los id de los actuadores y el valor de estos, con lo que al final, la tabla queda actualizada con los nuevos datos.
 
 
-Para terminar, queda la acción de borrar escenas. Gracias a Laravel y su ORM, es muy sencillo. Traemos de la base de datos el objeto a borrar, y llamamos a su función \lstinline|delete()|.
+
 \begin{lstlisting}
 
 
@@ -1215,7 +1232,7 @@ public function delete($id){
 }
    \end{lstlisting}
    
-   
+   Para terminar, queda la acción de borrar escenas. Gracias a Laravel y su ORM, es muy sencillo. Traemos de la base de datos el objeto a borrar, y llamamos a su función \lstinline|delete()|.
    
    
    
